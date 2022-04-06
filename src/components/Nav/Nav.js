@@ -1,11 +1,10 @@
 import React from 'react';
 import NavMenu from './NavMenu';
+import ActionButtons from './ActionButtons';
 //Material UI
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchBar from './SearchBar';
 
 const Nav = () => {
@@ -19,11 +18,7 @@ const Nav = () => {
 						}}>
 						<NavMenu />
 						<SearchBar />
-						<Box>
-							<IconButton>
-								<AccountCircleIcon fontSize='large' />
-							</IconButton>
-						</Box>
+						<ActionButtons />
 					</Toolbar>
 				</AppBar>
 			</Box>

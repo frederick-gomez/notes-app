@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 const NavMenu = () => {
 	return (
 		<Stack direction='row' spacing={1} alignItems='center'>
-			<IconButton edge='center' color='inherit' aria-label='menu'>
+			<IconButton color='inherit' aria-label='menu'>
 				<MenuIcon />
 			</IconButton>
 			<Box
