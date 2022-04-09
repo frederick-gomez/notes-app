@@ -9,22 +9,24 @@ import Box from '@mui/material/Box';
 
 const NavMenu = () => {
 	return (
-		<Stack direction='row' spacing={1} alignItems='center'>
-			<IconButton color='inherit' aria-label='menu'>
-				<MenuIcon />
-			</IconButton>
-			<Box
-				component='img'
-				src={Logo}
-				alt='Logo'
-				sx={{
-					width: '50px',
-				}}
-			/>
-			<Typography variant='h5' component='h1'>
-				Notes
-			</Typography>
-		</Stack>
+		<>
+			<Stack direction='row' spacing={1} alignItems='center'>
+				<IconButton color='inherit' aria-label='menu'>
+					<MenuIcon />
+				</IconButton>
+				<Box
+					component='img'
+					src={Logo}
+					alt='Logo'
+					sx={{
+						width: '50px',
+					}}
+				/>
+				<Typography variant='h5' component='h1'>
+					Notes
+				</Typography>
+			</Stack>
+		</>
 	);
 };
 
