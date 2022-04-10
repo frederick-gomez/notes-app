@@ -10,10 +10,10 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 
-//To-Do List
-//Fix interaction in NoteCard for the visibility of the action buttons
-//Add palette colors for dark mode
-//Add sidebar and manage full widht of the content
+// To-Do List
+// Fix interaction in NoteCard for the visibility of the action buttons
+// Add sidebar and manage full widht of the content
+// Update notes colors on theme change
 
 const light = {
 	palette: {
@@ -33,7 +33,6 @@ function App() {
 	const changeTheme = () => {
 		setIsDarkMode(!isDarkMode);
 	};
-	console.log(isDarkMode);
 
 	return (
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>

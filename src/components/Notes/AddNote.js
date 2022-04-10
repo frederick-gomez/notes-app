@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import AddNoteForm from './AddNoteForm';
 
 //Material UI
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 const AddNote = () => {
+	const [isNotesForm, setIsNotesForm] = useState(false);
+
+	const openNotesForm = () => {
+		setIsNotesForm(true);
+	};
 	return (
 		<Container
 			sx={{
@@ -16,26 +19,21 @@ const AddNote = () => {
 				justifyContent: 'center',
 				marginBottom: 4,
 			}}>
-			<Paper component='form' elevation={5}>
-				<TextField
-					sx={{
-						minWidth: '250px',
-						maxWidth: '550px',
-					}}
+			{!isNotesForm ? (
+				<Button
+					onClick={openNotesForm}
+					variant='contained'
 					fullWidth
-					size='small'
-					id='add-note'
-					label='Add a note...'
-					multiline
-					InputProps={{
-						endAdornment: (
-							<InputAdornment position='start'>
-								<NoteAddIcon />
-							</InputAdornment>
-						),
-					}}
-				/>
-			</Paper>
+					size='large'
+					endIcon={<NoteAddIcon />}
+					sx={{
+						maxWidth: '500px',
+					}}>
+					Add a note
+				</Button>
+			) : (
+				<AddNoteForm />
+			)}
 		</Container>
 	);
 };
