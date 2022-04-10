@@ -11,7 +11,7 @@ import SearchBar from './SearchBar';
 const Nav = () => {
 	return (
 		<nav>
-			<Box mb={7} sx={{ flexGrow: 1 }}>
+			<Box mb={4} sx={{ flexGrow: 1 }}>
 				<AppBar position='static' color='inherit'>
 					<Toolbar
 						sx={{
