@@ -16,13 +16,27 @@ import Fade from '@mui/material/Fade';
 const NoteCard = () => {
 	const [isActionVisible, setIsActionVisible] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
+	const [currentColor, setCurrentColor] = useState(null);
 
 	const selectAnchorEl = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
+	const toggleActions = () => {
+		setIsActionVisible((prevState) => prevState);
+	};
+
 	const closePalette = () => {
 		setAnchorEl(null);
+	};
+
+	//Hide actions only if menu isn't open
+	const closeActions = () => {
+		if (anchorEl) {
+			return;
+		} else {
+			setIsActionVisible(false);
+		}
 	};
 
 	return (
@@ -33,10 +47,14 @@ const NoteCard = () => {
 			md={4}
 			lg={2}
 			onMouseEnter={() => setIsActionVisible(true)}
-			onMouseLeave={() => setIsActionVisible(false)}>
-			<Card elevation={5}>
+			onMouseLeave={closeActions}>
+			<Card
+				elevation={5}
+				sx={{
+					backgroundColor: `${currentColor}`,
+				}}>
 				<CardHeader
-					title={'titulo'}
+					title={'Titulo'}
 					subheader={'work'}
 					action={
 						<IconButton>
@@ -52,7 +70,7 @@ const NoteCard = () => {
 						facilis dolorum. Nobis, ullam soluta.
 					</Typography>
 				</CardContent>
-				<Fade in={isActionVisible} exit timeout={400}>
+				<Fade in={isActionVisible} timeout={400}>
 					<CardActions
 						sx={{
 							visibility: `${isActionVisible ? '' : 'hidden'}`,
@@ -60,10 +78,18 @@ const NoteCard = () => {
 						<IconButton>
 							<ArchiveIcon />
 						</IconButton>
-						<IconButton onClick={(e) => selectAnchorEl(e)}>
+						<IconButton
+							onClick={(e) => {
+								selectAnchorEl(e);
+								toggleActions();
+							}}>
 							<PaletteIcon />
 						</IconButton>
-						<NotesPalette onClose={closePalette} anchorEl={anchorEl} />
+						<NotesPalette
+							onClose={closePalette}
+							anchorEl={anchorEl}
+							selectColor={setCurrentColor}
+						/>
 					</CardActions>
 				</Fade>
 			</Card>

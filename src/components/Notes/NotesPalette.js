@@ -1,9 +1,13 @@
 import React from 'react';
-import Popover from '@mui/material/Popover';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
+import Popper from '@mui/material/Popper';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import ColorizeIcon from '@mui/icons-material/Colorize';
+import InvertColorsOffIcon from '@mui/icons-material/InvertColorsOff';
 
-const NotesPalette = ({ onClose, anchorEl }) => {
+const NotesPalette = ({ onClose, anchorEl, selectColor }) => {
 	const colors = [
 		'#ccff90',
 		'#f28b82',
@@ -18,34 +22,46 @@ const NotesPalette = ({ onClose, anchorEl }) => {
 	];
 
 	return (
-		<Popover
-			variant='outlined'
-			open={Boolean(anchorEl)}
-			onClose={onClose}
-			anchorEl={anchorEl}
-			anchorOrigin={{
-				vertical: 'top',
-				horizontal: 'right',
-			}}
-			transformOrigin={{
-				vertical: 'bottom',
-				horizontal: 'left',
-			}}>
-			<Container>
-				{colors.map((color) => {
-					return (
-						<Button
-							key={color}
-							onClick={onClose}
+		<Popper open={Boolean(anchorEl)} onClose={onClose} anchorEl={anchorEl}>
+			<Paper elevation={7} sx={{ width: '60%' }}>
+				<ClickAwayListener onClickAway={onClose}>
+					<Stack
+						flexWrap='wrap'
+						justifyContent='space-between'
+						direction='row'
+						sx={{
+							p: 1,
+						}}>
+						<IconButton
+							key={'noColor'}
+							onClick={() => {
+								selectColor(null);
+							}}
 							sx={{
-								background: `${color}`,
-								borderRadius: '40%',
-								margin: '10px',
-							}}></Button>
-					);
-				})}
-			</Container>
-		</Popover>
+								backgroundColor: '#dfdfdf',
+								margin: '5px 0 5px 0',
+							}}>
+							<InvertColorsOffIcon />
+						</IconButton>
+						{colors.map((color) => {
+							return (
+								<IconButton
+									key={color}
+									onClick={() => {
+										selectColor(color);
+									}}
+									sx={{
+										backgroundColor: `${color}`,
+										margin: '5px 0 5px 0',
+									}}>
+									<ColorizeIcon />
+								</IconButton>
+							);
+						})}
+					</Stack>
+				</ClickAwayListener>
+			</Paper>
+		</Popper>
 	);
 };
 

@@ -5,6 +5,9 @@ import NotesList from './components/Notes/NotesList';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';
 
+//To-Do List
+//Fix interaction in NoteCard for the visibility of the action buttons
+
 function App() {
 	const theme = createTheme({
 		palette: {
