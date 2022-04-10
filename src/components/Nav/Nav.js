@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import SearchBar from './SearchBar';
 
-const Nav = () => {
+const Nav = ({ darkModeHandler, isDarkMode }) => {
 	return (
 		<nav>
 			<Box mb={4} sx={{ flexGrow: 1 }}>
@@ -21,7 +21,10 @@ const Nav = () => {
 
 						{/* <SideMenu /> */}
 						<SearchBar />
-						<ActionButtons />
+						<ActionButtons
+							darkModeHandler={darkModeHandler}
+							isDarkMode={isDarkMode}
+						/>
 					</Toolbar>
 				</AppBar>
 			</Box>
