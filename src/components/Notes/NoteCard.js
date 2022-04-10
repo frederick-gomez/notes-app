@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import NotesPalette from './NotesPalette';
+
 //Material UI
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
