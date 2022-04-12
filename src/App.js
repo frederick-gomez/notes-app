@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import './App.css';
 import themeContext from './components/Context/theme-context';
 //Components
 import Nav from './components/Nav/Nav';
 import NotesList from './components/Notes/NotesList';
-import AddNote from './components/Notes/AddNote';
+import AddNote from './components/Notes/AddNote/AddNote';
 
 //Material UI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -39,7 +40,7 @@ function App() {
 			<CssBaseline enableColorScheme>
 				<themeContext.Provider value={isDarkMode}>
 					<Nav darkModeHandler={changeTheme} isDarkMode={isDarkMode} />
-					<main>
+					<main className='container'>
 						<AddNote />
 						<NotesList />
 					</main>

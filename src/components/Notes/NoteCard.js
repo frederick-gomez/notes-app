@@ -75,6 +75,7 @@ const NoteCard = () => {
 					<CardActions
 						sx={{
 							visibility: `${isActionVisible ? '' : 'hidden'}`,
+							paddingTop: '0',
 						}}>
 						<IconButton>
 							<ArchiveIcon />

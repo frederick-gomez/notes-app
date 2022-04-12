@@ -1,17 +1,18 @@
 import React from 'react';
 import Logo from '../../assets/notes-logo.png';
-//MUI
+
+//Material UI
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 
-const NavMenu = () => {
+const NavMenu = ({ toggleDrawer }) => {
 	return (
 		<>
 			<Stack direction='row' spacing={1} alignItems='center'>
-				<IconButton color='inherit' aria-label='menu'>
+				<IconButton color='inherit' aria-label='menu' onClick={toggleDrawer}>
 					<MenuIcon />
 				</IconButton>
 				<Box

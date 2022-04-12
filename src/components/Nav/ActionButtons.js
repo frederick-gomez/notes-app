@@ -1,6 +1,8 @@
 import React from 'react';
+import SearchBar from './SearchBar';
+
 //Material UI
-import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -9,7 +11,8 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 	return (
-		<Box>
+		<Stack direction='row'>
+			<SearchBar />
 			<Tooltip title={isDarkMode ? 'Enable light mode' : 'Enable dark mode'}>
 				<IconButton onClick={darkModeHandler}>
 					{isDarkMode ? (
@@ -22,7 +25,7 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 			<IconButton>
 				<AccountCircleIcon fontSize='large' />
 			</IconButton>
-		</Box>
+		</Stack>
 	);
 };
 

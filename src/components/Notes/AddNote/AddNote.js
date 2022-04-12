@@ -12,6 +12,10 @@ const AddNote = () => {
 	const openNotesForm = () => {
 		setIsNotesForm(true);
 	};
+
+	const closeNotesForm = () => {
+		setIsNotesForm(false);
+	};
 	return (
 		<Container
 			sx={{
@@ -19,21 +23,18 @@ const AddNote = () => {
 				justifyContent: 'center',
 				marginBottom: 4,
 			}}>
-			{!isNotesForm ? (
-				<Button
-					onClick={openNotesForm}
-					variant='contained'
-					fullWidth
-					size='large'
-					endIcon={<NoteAddIcon />}
-					sx={{
-						maxWidth: '500px',
-					}}>
-					Add a note
-				</Button>
-			) : (
-				<AddNoteForm />
-			)}
+			<Button
+				onClick={openNotesForm}
+				variant='contained'
+				fullWidth
+				size='large'
+				endIcon={<NoteAddIcon />}
+				sx={{
+					maxWidth: '500px',
+				}}>
+				Add a note
+			</Button>
+			<AddNoteForm isOpen={isNotesForm} closeModal={closeNotesForm} />
 		</Container>
 	);
 };
