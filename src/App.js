@@ -13,8 +13,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 // To-Do List
 // Fix interaction in NoteCard for the visibility of the action buttons
-// Add sidebar and manage full widht of the content
 // Update notes colors on theme change
+//Save data on AddNote form
 
 const light = {
 	palette: {
