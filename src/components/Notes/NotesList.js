@@ -5,7 +5,8 @@ import NoteCard from './NoteCard';
 const NotesList = () => {
 	return (
 		<div>
-			<Grid container spacing={3} justifyContent='center' alignItems='center'>
+			<Grid container spacing={3}>
+				<NoteCard />
 				<NoteCard />
 				<NoteCard />
 				<NoteCard />

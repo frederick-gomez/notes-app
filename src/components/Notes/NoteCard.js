@@ -46,7 +46,7 @@ const NoteCard = () => {
 			xs={12}
 			sm={6}
 			md={4}
-			lg={2}
+			lg={3}
 			onMouseEnter={() => setIsActionVisible(true)}
 			onMouseLeave={closeActions}>
 			<Card
