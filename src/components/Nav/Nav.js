@@ -8,7 +8,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
-const Nav = ({ darkModeHandler, isDarkMode }) => {
+const Nav = ({ darkModeHandler, isDarkMode, listViewHandler, isListView }) => {
 	const [isDrawerOpen, setisDrawerOpen] = useState(false);
 
 	const toggleDrawer = () => {
@@ -27,6 +27,8 @@ const Nav = ({ darkModeHandler, isDarkMode }) => {
 					<ActionButtons
 						darkModeHandler={darkModeHandler}
 						isDarkMode={isDarkMode}
+						listViewHandler={listViewHandler}
+						isListView={isListView}
 					/>
 				</Toolbar>
 			</AppBar>

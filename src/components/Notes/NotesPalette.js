@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import themeContext from '../Context/theme-context';
+import ThemeContext from '../Context/ThemeContext';
 
 //Material UI
 import Popper from '@mui/material/Popper';
@@ -11,7 +11,7 @@ import ColorizeIcon from '@mui/icons-material/Colorize';
 import InvertColorsOffIcon from '@mui/icons-material/InvertColorsOff';
 
 const NotesPalette = ({ onClose, anchorEl, selectColor }) => {
-	const themeCtx = useContext(themeContext);
+	const themeCtx = useContext(ThemeContext);
 
 	const lightColors = [
 		'#f28b82',
@@ -43,7 +43,7 @@ const NotesPalette = ({ onClose, anchorEl, selectColor }) => {
 
 	return (
 		<Popper open={Boolean(anchorEl)} onClose={onClose} anchorEl={anchorEl}>
-			<Paper elevation={7} sx={{ width: '60%' }}>
+			<Paper elevation={5} sx={{ width: '60%' }}>
 				<ClickAwayListener onClickAway={onClose}>
 					<Stack
 						flexWrap='wrap'

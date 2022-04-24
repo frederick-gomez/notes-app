@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import themeContext from './components/Context/theme-context';
+import ThemeContext from './components/Context/ThemeContext';
 //Components
 import Nav from './components/Nav/Nav';
 import NotesList from './components/Notes/NotesList';
@@ -30,21 +30,31 @@ const dark = {
 
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [isListView, setIsListView] = useState(false);
 
-	const changeTheme = () => {
+	const listViewHandler = () => {
+		setIsListView(!isListView);
+	};
+
+	const darkModeHandler = () => {
 		setIsDarkMode(!isDarkMode);
 	};
 
 	return (
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>
 			<CssBaseline enableColorScheme>
-				<themeContext.Provider value={isDarkMode}>
-					<Nav darkModeHandler={changeTheme} isDarkMode={isDarkMode} />
+				<ThemeContext.Provider value={isDarkMode}>
+					<Nav
+						darkModeHandler={darkModeHandler}
+						isDarkMode={isDarkMode}
+						listViewHandler={listViewHandler}
+						isListView={isListView}
+					/>
 					<main className='container'>
 						<AddNote />
-						<NotesList />
+						<NotesList isListView={isListView} />
 					</main>
-				</themeContext.Provider>
+				</ThemeContext.Provider>
 			</CssBaseline>
 		</ThemeProvider>
 	);

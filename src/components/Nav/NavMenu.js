@@ -12,7 +12,7 @@ const NavMenu = ({ toggleDrawer }) => {
 	return (
 		<>
 			<Stack direction='row' spacing={1} alignItems='center'>
-				<IconButton color='inherit' aria-label='menu' onClick={toggleDrawer}>
+				<IconButton aria-label='menu' onClick={toggleDrawer}>
 					<MenuIcon />
 				</IconButton>
 				<Box
