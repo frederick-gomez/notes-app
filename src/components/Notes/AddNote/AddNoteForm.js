@@ -23,7 +23,7 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 			return;
 		}
 		if (!tags.includes(newTag)) {
-			setTags([...tags, newTag]);
+			setTags(tags.push(newTag));
 		}
 	};
 
@@ -61,7 +61,8 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 				onSubmit={handleSubmit}
 				component='form'
 				elevation={4}
-				sx={modalStyle}>
+				sx={modalStyle}
+			>
 				<CardHeader title='Add a Note' />
 				<CardContent>
 					<FormInputs
@@ -76,14 +77,16 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 						type='submit'
 						variant='contained'
 						startIcon={<AddIcon />}
-						sx={{ marginLeft: 'auto' }}>
+						sx={{ marginLeft: 'auto' }}
+					>
 						Add Note
 					</Button>
 					<Button
 						onClick={closeForm}
 						variant='outlined'
 						startIcon={<CloseIcon />}
-						color='error'>
+						color='error'
+					>
 						Close
 					</Button>
 				</CardActions>

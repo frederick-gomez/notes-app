@@ -11,10 +11,11 @@ import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 
-// To-Do List
-// Fix interaction in NoteCard for the visibility of the action buttons
-// Update notes colors on theme change
-//Save data on AddNote form
+// TODO: Fix interaction in NoteCard for the visibility of the action buttons
+// TODO: Update notes colors on theme change
+// TODO: Save data on AddNote form
+// TODO: Implement tags feature
+// ? Use react-context or Redux?
 
 const light = {
 	palette: {

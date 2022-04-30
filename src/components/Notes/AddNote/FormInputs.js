@@ -1,50 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //Material UI
 import TextField from '@mui/material/TextField';
-import LabelIcon from '@mui/icons-material/Label';
-import Popper from '@mui/material/Popper';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/MenuItem';
-import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import AddIcon from '@mui/icons-material/Add';
+// import Chip from '@mui/material/Chip';
+// import Box from '@mui/material/Box';
+// import LabelIcon from '@mui/icons-material/Label';
+// import Button from '@mui/material/Button';
+// import Checkbox from '@mui/material/Checkbox';
+// import FormGroup from '@mui/material/FormGroup';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import AddIcon from '@mui/icons-material/Add';
 
-const FormInputs = ({
-	handleTagsChange,
-	handleValueChange,
-	noteData,
-	tags,
-}) => {
-	const [anchorEl, setAnchorEl] = useState(null);
-	const [newTag, setNewTag] = useState('');
-
-	const selectAnchorEl = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const closePopper = () => {
-		setAnchorEl(null);
-	};
-
-	const handleTagDelete = (tag) => {
-		console.log(tag);
-	};
-
+const FormInputs = ({ handleValueChange, noteData }) => {
 	const inputStyle = {
 		marginBottom: 3,
-	};
-
-	const paperStyle = {
-		padding: 2,
-		minWidth: 250,
-		maxHeight: 300,
-		overflowY: 'scroll',
 	};
 
 	return (
@@ -69,13 +38,15 @@ const FormInputs = ({
 				fullWidth
 				multiline
 			/>
-			<Box
+
+			{/* <Box
 				sx={{
 					display: 'flex',
 					flexWrap: 'wrap',
 					gap: 0.5,
 					marginBottom: 2,
-				}}>
+				}}
+			>
 				{tags.map((tag) => (
 					<Chip
 						onDelete={() => {
@@ -86,60 +57,52 @@ const FormInputs = ({
 					/>
 				))}
 			</Box>
-			<Button
-				onClick={(e) => {
-					selectAnchorEl(e);
+		  <Button
+				onClick={() => {
+					handleTagsChange(newTag);
 				}}
-				startIcon={<LabelIcon />}>
+				startIcon={<LabelIcon />}
+			>
 				Add a Tag
 			</Button>
-			<Popper
-				placement='bottom-start'
-				open={Boolean(anchorEl)}
-				onClose={closePopper}
-				anchorEl={anchorEl}>
-				<ClickAwayListener onClickAway={closePopper}>
-					<Paper sx={paperStyle} elevation={7} component='form'>
-						<TextField
-							sx={inputStyle}
-							variant='standard'
-							name='tags'
-							id='tags'
-							placeholder='Name a new tag'
-							fullWidth
-							onChange={(e) => {
-								setNewTag(e.target.value);
-							}}
-							value={newTag}
-						/>
-						<FormGroup sx={inputStyle}>
-							{tags.map((tag) => (
-								<FormControlLabel
-									key={tag}
-									control={
-										<Checkbox
-											onChange={(e) => {
-												console.log(tag);
-											}}
-										/>
-									}
-									label={tag}
-									value={tag}
-								/>
-							))}
-						</FormGroup>
-						<Button
-							onClick={() => {
-								handleTagsChange(newTag);
-								setNewTag('');
-							}}
-							variant='text'
-							startIcon={<AddIcon />}>
-							Add tags
-						</Button>
-					</Paper>
-				</ClickAwayListener>
-			</Popper>
+			<TextField
+				sx={inputStyle}
+				variant='standard'
+				name='tags'
+				id='tags'
+				placeholder='Name a new tag'
+				fullWidth
+				onChange={(e) => {
+					setNewTag(e.target.value);
+				}}
+				value={newTag}
+			/>
+			<FormGroup sx={inputStyle}>
+				{tags.map((tag) => (
+					<FormControlLabel
+						key={tag}
+						control={
+							<Checkbox
+								onChange={(e) => {
+									console.log(tag);
+								}}
+							/>
+						}
+						label={tag}
+						value={tag}
+					/>
+				))}
+			</FormGroup>
+			<Button
+				onClick={() => {
+					handleTagsChange(newTag);
+					setNewTag('');
+				}}
+				variant='text'
+				startIcon={<AddIcon />}
+			>
+				Add tags
+			</Button> */}
 		</>
 	);
 };
