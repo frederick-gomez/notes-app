@@ -16,16 +16,6 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 		title: '',
 		body: '',
 	});
-	const [tags, setTags] = useState(['work', 'gaming']);
-
-	const handleTagsChange = (newTag) => {
-		if (!newTag.trim()) {
-			return;
-		}
-		if (!tags.includes(newTag)) {
-			setTags(tags.push(newTag));
-		}
-	};
 
 	const handleValueChange = (e) => {
 		setNoteData({
@@ -34,18 +24,27 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 		});
 	};
 
+	const saveNote = async (data) => {
+		await fetch('http://localhost:5000/notes', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		});
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
 		console.log(noteData);
-		console.log(tags);
+		saveNote(noteData);
 
 		closeForm();
 		setNoteData({
 			title: '',
 			body: '',
 		});
-		setTags([]);
 	};
 
 	const modalStyle = {
@@ -67,8 +66,6 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 				<CardContent>
 					<FormInputs
 						handleValueChange={handleValueChange}
-						handleTagsChange={handleTagsChange}
-						tags={tags}
 						noteData={noteData}
 					/>
 				</CardContent>

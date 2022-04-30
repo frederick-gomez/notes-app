@@ -18,6 +18,7 @@ const NotesList = ({ isListView }) => {
 
 	useEffect(() => {
 		fetchNotes();
+		console.log('Render');
 	}, []);
 
 	const listView = 1;
@@ -27,7 +28,8 @@ const NotesList = ({ isListView }) => {
 		<Masonry
 			sx={{ margin: 0, alignContent: 'center' }}
 			columns={isListView ? listView : gridView}
-			spacing={3}>
+			spacing={3}
+		>
 			{notesList.map((note) => (
 				<NoteCard
 					key={note.id}
