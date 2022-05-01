@@ -71,20 +71,16 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 				</CardContent>
 				<CardActions>
 					<Button
-						type='submit'
-						variant='contained'
-						startIcon={<AddIcon />}
-						sx={{ marginLeft: 'auto' }}
-					>
-						Add Note
-					</Button>
-					<Button
 						onClick={closeForm}
 						variant='outlined'
 						startIcon={<CloseIcon />}
 						color='error'
+						sx={{ marginLeft: 'auto' }}
 					>
 						Close
+					</Button>
+					<Button type='submit' variant='contained' endIcon={<AddIcon />}>
+						Add Note
 					</Button>
 				</CardActions>
 			</Card>
