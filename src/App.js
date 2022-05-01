@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import ThemeContext from './components/Context/ThemeContext';
+import ThemeProviderCtx from './components/Context/ThemeContext';
 //Components
 import Nav from './components/Nav/Nav';
 import NotesList from './components/Notes/NotesList';
@@ -15,6 +15,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 // TODO: Update notes colors on theme change
 // TODO: Save data on AddNote form
 // TODO: Implement tags feature
+// TODO: Create UI for updating a note
 // ? Use react-context or Redux?
 
 const light = {
@@ -44,7 +45,7 @@ function App() {
 	return (
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>
 			<CssBaseline enableColorScheme>
-				<ThemeContext.Provider value={isDarkMode}>
+				<ThemeProviderCtx value={isDarkMode}>
 					<Nav
 						darkModeHandler={darkModeHandler}
 						isDarkMode={isDarkMode}
@@ -55,7 +56,7 @@ function App() {
 						<AddNote />
 						<NotesList isListView={isListView} />
 					</main>
-				</ThemeContext.Provider>
+				</ThemeProviderCtx>
 			</CssBaseline>
 		</ThemeProvider>
 	);
