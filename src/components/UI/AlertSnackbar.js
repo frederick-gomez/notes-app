@@ -2,14 +2,14 @@ import React from 'react';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
-const DeleteSnackbar = ({ isOpen, handleClose }) => {
+const AlertSnackbar = ({ isOpen, handleClose, alertType, children }) => {
 	return (
 		<Snackbar open={isOpen} onClose={handleClose} autoHideDuration={4000}>
-			<Alert variant='filled' severity='success' onClose={handleClose}>
-				Note deleted succesfully
+			<Alert variant='filled' severity={alertType} onClose={handleClose}>
+				{children}
 			</Alert>
 		</Snackbar>
 	);
 };
 
-export default DeleteSnackbar;
+export default AlertSnackbar;
