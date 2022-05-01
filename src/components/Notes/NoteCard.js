@@ -9,11 +9,15 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
+import Fade from '@mui/material/Fade';
+import AlertSnackbar from '../UI/AlertSnackbar';
+
+//Icons
 import ClearIcon from '@mui/icons-material/Clear';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import PaletteIcon from '@mui/icons-material/Palette';
-import Fade from '@mui/material/Fade';
-import DeleteSnackbar from '../UI/DeleteSnackbar';
+import EditIcon from '@mui/icons-material/Edit';
+import EditNote from './EditNote';
 
 const NoteCard = ({ title, body, id }) => {
 	const [isActionVisible, setIsActionVisible] = useState(false);
@@ -21,20 +25,21 @@ const NoteCard = ({ title, body, id }) => {
 	const [currentColor, setCurrentColor] = useState(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+	const [isEditOpen, setIsEditOpen] = useState(false);
 
 	const selectAnchorEl = (event) => {
 		setAnchorEl(event.currentTarget);
-	};
-
-	const toggleActions = () => {
-		setIsActionVisible((prevState) => prevState);
 	};
 
 	const closePalette = () => {
 		setAnchorEl(null);
 	};
 
-	//Hide actions only if menu isn't open
+	const openActions = () => {
+		setIsActionVisible(!isActionVisible);
+	};
+
+	// TODO: Hide actions only if menu isn't open
 	const closeActions = () => {
 		if (anchorEl) {
 			return;
@@ -43,6 +48,7 @@ const NoteCard = ({ title, body, id }) => {
 		}
 	};
 
+	//Snackbar
 	const openSnackbar = () => {
 		setIsSnackbarOpen(true);
 	};
@@ -51,12 +57,22 @@ const NoteCard = ({ title, body, id }) => {
 		setIsSnackbarOpen(false);
 	};
 
+	//Dialog
 	const closeDialog = () => {
 		setIsDialogOpen(false);
 	};
 
 	const confirmDelete = () => {
 		setIsDialogOpen(true);
+	};
+
+	//Edit
+	const openEdit = () => {
+		setIsEditOpen(true);
+	};
+
+	const closeEdit = () => {
+		setIsEditOpen(false);
 	};
 
 	const deleteNote = async (id) => {
@@ -71,7 +87,7 @@ const NoteCard = ({ title, body, id }) => {
 	return (
 		<>
 			<Card
-				onMouseEnter={() => setIsActionVisible(true)}
+				onMouseEnter={openActions}
 				onMouseLeave={closeActions}
 				elevation={3}
 				sx={{
@@ -92,6 +108,7 @@ const NoteCard = ({ title, body, id }) => {
 						</IconButton>
 					}
 				/>
+
 				<CardContent
 					sx={{
 						paddingTop: 0,
@@ -99,6 +116,7 @@ const NoteCard = ({ title, body, id }) => {
 				>
 					<Typography variant='body2'>{body}</Typography>
 				</CardContent>
+
 				<Fade in={isActionVisible} timeout={400}>
 					<CardActions
 						sx={{
@@ -109,29 +127,52 @@ const NoteCard = ({ title, body, id }) => {
 						<IconButton>
 							<ArchiveIcon />
 						</IconButton>
+
 						<IconButton
 							onClick={(e) => {
 								selectAnchorEl(e);
-								toggleActions();
+								openActions();
 							}}
 						>
 							<PaletteIcon />
 						</IconButton>
+
 						<NotesPalette
 							onClose={closePalette}
 							anchorEl={anchorEl}
 							selectColor={setCurrentColor}
 						/>
+
+						<IconButton onClick={openEdit}>
+							<EditIcon />
+						</IconButton>
 					</CardActions>
 				</Fade>
 			</Card>
+
+			<EditNote
+				isOpen={isEditOpen}
+				handleClose={closeEdit}
+				noteData={{
+					title,
+					body,
+					id,
+				}}
+			/>
+
 			<DeleteDialog
 				isOpen={isDialogOpen}
 				handleClose={closeDialog}
 				deleteNote={() => deleteNote(id)}
 				openSnackbar={openSnackbar}
 			/>
-			<DeleteSnackbar isOpen={isSnackbarOpen} handleClose={closeSnackbar} />
+			<AlertSnackbar
+				isOpen={isSnackbarOpen}
+				handleClose={closeSnackbar}
+				alertType='success'
+			>
+				Note deleted succesful
+			</AlertSnackbar>
 		</>
 	);
 };
