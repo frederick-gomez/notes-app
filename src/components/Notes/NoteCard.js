@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import NotesPalette from './NotesPalette';
 import DeleteDialog from '../UI/DeleteDialog';
+import EditNote from './EditNote';
+import NoteActions from './NoteActions';
 
 //Material UI
 import Typography from '@mui/material/Typography';
@@ -10,59 +11,32 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import Fade from '@mui/material/Fade';
-import AlertSnackbar from '../UI/AlertSnackbar';
 
 //Icons
 import ClearIcon from '@mui/icons-material/Clear';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import PaletteIcon from '@mui/icons-material/Palette';
-import EditIcon from '@mui/icons-material/Edit';
-import EditNote from './EditNote';
 
 const NoteCard = ({ title, body, id }) => {
 	const [isActionVisible, setIsActionVisible] = useState(false);
-	const [anchorEl, setAnchorEl] = useState(null);
 	const [currentColor, setCurrentColor] = useState(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 	const [isEditOpen, setIsEditOpen] = useState(false);
 
-	const selectAnchorEl = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const closePalette = () => {
-		setAnchorEl(null);
-	};
-
-	const openActions = () => {
-		setIsActionVisible(!isActionVisible);
+	//Card action buttons
+	const showActions = () => {
+		setIsActionVisible(true);
 	};
 
 	// TODO: Hide actions only if menu isn't open
-	const closeActions = () => {
-		if (anchorEl) {
-			return;
-		} else {
-			setIsActionVisible(false);
-		}
-	};
-
-	//Snackbar
-	const openSnackbar = () => {
-		setIsSnackbarOpen(true);
-	};
-
-	const closeSnackbar = () => {
-		setIsSnackbarOpen(false);
+	const hideActions = () => {
+		setIsActionVisible(false);
 	};
 
 	//Dialog
-	const closeDialog = () => {
+	const closeDeleteDialog = () => {
 		setIsDialogOpen(false);
 	};
 
-	const confirmDelete = () => {
+	const openDeleteDialog = () => {
 		setIsDialogOpen(true);
 	};
 
@@ -87,8 +61,8 @@ const NoteCard = ({ title, body, id }) => {
 	return (
 		<>
 			<Card
-				onMouseEnter={openActions}
-				onMouseLeave={closeActions}
+				onMouseEnter={showActions}
+				onMouseLeave={hideActions}
 				elevation={3}
 				sx={{
 					maxWidth: 600,
@@ -103,7 +77,7 @@ const NoteCard = ({ title, body, id }) => {
 						fontFamily: 'Open Sans',
 					}}
 					action={
-						<IconButton onClick={confirmDelete}>
+						<IconButton onClick={openDeleteDialog}>
 							<ClearIcon />
 						</IconButton>
 					}
@@ -124,28 +98,11 @@ const NoteCard = ({ title, body, id }) => {
 							paddingTop: '0',
 						}}
 					>
-						<IconButton>
-							<ArchiveIcon />
-						</IconButton>
-
-						<IconButton
-							onClick={(e) => {
-								selectAnchorEl(e);
-								openActions();
-							}}
-						>
-							<PaletteIcon />
-						</IconButton>
-
-						<NotesPalette
-							onClose={closePalette}
-							anchorEl={anchorEl}
-							selectColor={setCurrentColor}
+						<NoteActions
+							openEdit={openEdit}
+							showActions={showActions}
+							setCurrentColor={setCurrentColor}
 						/>
-
-						<IconButton onClick={openEdit}>
-							<EditIcon />
-						</IconButton>
 					</CardActions>
 				</Fade>
 			</Card>
@@ -162,17 +119,9 @@ const NoteCard = ({ title, body, id }) => {
 
 			<DeleteDialog
 				isOpen={isDialogOpen}
-				handleClose={closeDialog}
+				handleClose={closeDeleteDialog}
 				deleteNote={() => deleteNote(id)}
-				openSnackbar={openSnackbar}
 			/>
-			<AlertSnackbar
-				isOpen={isSnackbarOpen}
-				handleClose={closeSnackbar}
-				alertType='success'
-			>
-				Note deleted succesful
-			</AlertSnackbar>
 		</>
 	);
 };

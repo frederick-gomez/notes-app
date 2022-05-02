@@ -24,7 +24,8 @@ const AddNote = () => {
 				display: 'flex',
 				justifyContent: 'center',
 				marginBottom: 4,
-			}}>
+			}}
+		>
 			<Box>
 				<Collapse in={!isNotesForm}>
 					<Button
@@ -34,8 +35,9 @@ const AddNote = () => {
 						size='large'
 						endIcon={<NoteAddIcon />}
 						sx={{
-							maxWidth: '500px',
-						}}>
+							maxWidth: 500,
+						}}
+					>
 						Add a note
 					</Button>
 				</Collapse>

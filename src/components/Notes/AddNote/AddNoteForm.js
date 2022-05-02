@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FormInputs from './FormInputs';
+import Notification from '../../UI/Notification';
 
 //Material UI
 import Card from '@mui/material/Card';
@@ -12,10 +13,18 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 const AddNoteForm = ({ isOpen, closeForm }) => {
+	const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 	const [noteData, setNoteData] = useState({
 		title: '',
 		body: '',
 	});
+
+	const hideNotification = () => {
+		setIsNotificationOpen(false);
+	};
+	const showNotification = () => {
+		setIsNotificationOpen(true);
+	};
 
 	const handleValueChange = (e) => {
 		setNoteData({
@@ -36,15 +45,14 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-
-		console.log(noteData);
 		saveNote(noteData);
 
-		closeForm();
 		setNoteData({
 			title: '',
 			body: '',
 		});
+		closeForm();
+		showNotification();
 	};
 
 	const modalStyle = {
@@ -55,36 +63,45 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 	};
 
 	return (
-		<Collapse in={isOpen}>
-			<Card
-				onSubmit={handleSubmit}
-				component='form'
-				elevation={4}
-				sx={modalStyle}
+		<>
+			<Collapse in={isOpen}>
+				<Card
+					onSubmit={handleSubmit}
+					component='form'
+					elevation={4}
+					sx={modalStyle}
+				>
+					<CardHeader title='Add a Note' />
+					<CardContent>
+						<FormInputs
+							handleValueChange={handleValueChange}
+							noteData={noteData}
+						/>
+					</CardContent>
+					<CardActions>
+						<Button
+							onClick={closeForm}
+							variant='outlined'
+							startIcon={<CloseIcon />}
+							color='error'
+							sx={{ marginLeft: 'auto' }}
+						>
+							Close
+						</Button>
+						<Button type='submit' variant='contained' endIcon={<AddIcon />}>
+							Add Note
+						</Button>
+					</CardActions>
+				</Card>
+			</Collapse>
+			<Notification
+				isOpen={isNotificationOpen}
+				handleClose={hideNotification}
+				alertType='success'
 			>
-				<CardHeader title='Add a Note' />
-				<CardContent>
-					<FormInputs
-						handleValueChange={handleValueChange}
-						noteData={noteData}
-					/>
-				</CardContent>
-				<CardActions>
-					<Button
-						onClick={closeForm}
-						variant='outlined'
-						startIcon={<CloseIcon />}
-						color='error'
-						sx={{ marginLeft: 'auto' }}
-					>
-						Close
-					</Button>
-					<Button type='submit' variant='contained' endIcon={<AddIcon />}>
-						Add Note
-					</Button>
-				</CardActions>
-			</Card>
-		</Collapse>
+				Note added
+			</Notification>
+		</>
 	);
 };
 

@@ -14,8 +14,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 // TODO: Fix interaction in NoteCard for the visibility of the action buttons
 // TODO: Update notes colors on theme change
 // TODO: Implement tags feature
-// TODO: Refactor card actions in separate component
-// TODO: Add notifications when an action is completed
+// TODO: Fix list view
 
 // ? Use objects for colors
 // ? Use react-context or Redux?
