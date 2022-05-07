@@ -23,7 +23,7 @@ const NavMenu = ({ toggleDrawer }) => {
 						width: '50px',
 					}}
 				/>
-				<Typography variant='h5' component='h1'>
+				<Typography variant='h6' component='h1'>
 					Notes
 				</Typography>
 			</Stack>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SearchBar from './SearchBar';
 
 //Material UI
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -17,18 +18,22 @@ const ActionButtons = ({
 	listViewHandler,
 	isListView,
 }) => {
+	const tabletSize = useMediaQuery('(max-width:599px)');
+
 	return (
 		<Stack direction='row'>
 			<SearchBar />
-			<Tooltip title={isListView ? 'Grid view' : 'List view'}>
-				<IconButton onClick={listViewHandler}>
-					{isListView ? (
-						<GridViewRoundedIcon fontSize='large' />
-					) : (
-						<ViewListRoundedIcon fontSize='large' />
-					)}
-				</IconButton>
-			</Tooltip>
+			{!tabletSize && (
+				<Tooltip title={isListView ? 'Grid view' : 'List view'}>
+					<IconButton onClick={listViewHandler}>
+						{isListView ? (
+							<GridViewRoundedIcon fontSize='large' />
+						) : (
+							<ViewListRoundedIcon fontSize='large' />
+						)}
+					</IconButton>
+				</Tooltip>
+			)}
 			<Tooltip title={isDarkMode ? 'Enable light mode' : 'Enable dark mode'}>
 				<IconButton onClick={darkModeHandler}>
 					{isDarkMode ? (

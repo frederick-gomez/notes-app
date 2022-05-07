@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NavMenu from './NavMenu';
 import ActionButtons from './ActionButtons';
 import SideMenu from './SideMenu';
-// import SideMenu from './SideMenu';
+
 //Material UI
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -21,9 +21,12 @@ const Nav = ({ darkModeHandler, isDarkMode, listViewHandler, isListView }) => {
 				<Toolbar
 					sx={{
 						justifyContent: 'space-between',
-					}}>
-					<NavMenu toggleDrawer={toggleDrawer} />
+					}}
+				>
 					<SideMenu isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+
+					<NavMenu toggleDrawer={toggleDrawer} />
+
 					<ActionButtons
 						darkModeHandler={darkModeHandler}
 						isDarkMode={isDarkMode}
