@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import './App.css';
 import ThemeProviderCtx from './components/Context/ThemeContext';
+
+//Auth
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './firebase';
+
 //Components
 import Nav from './components/Nav/Nav';
 import NotesList from './components/Notes/NotesList';
 import AddNote from './components/Notes/AddNote/AddNote';
+import AccountForm from './components/Auth/AccountForm';
 
 //Material UI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -15,9 +21,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 // TODO: Update notes colors on theme change
 // TODO: Implement tags feature
 // TODO: Fix edit form in mobile view
-
+// TODO: Populate UserModal
+// ! Fix loading button on AccountForm
 // ? Use objects for colors
-// ? Use react-context or Redux?
 
 const light = {
 	palette: {
@@ -35,13 +41,10 @@ function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [isListView, setIsListView] = useState(false);
 
-	const listViewHandler = () => {
-		setIsListView(!isListView);
-	};
+	const [user] = useAuthState(auth);
 
-	const darkModeHandler = () => {
-		setIsDarkMode(!isDarkMode);
-	};
+	const listViewHandler = () => setIsListView(!isListView);
+	const darkModeHandler = () => setIsDarkMode(!isDarkMode);
 
 	return (
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>
@@ -54,8 +57,13 @@ function App() {
 						isListView={isListView}
 					/>
 					<main className='container'>
-						<AddNote />
-						<NotesList isListView={isListView} />
+						{!user && <AccountForm />}
+						{user && (
+							<>
+								<AddNote />
+								<NotesList isListView={isListView} />
+							</>
+						)}
 					</main>
 				</ThemeProviderCtx>
 			</CssBaseline>

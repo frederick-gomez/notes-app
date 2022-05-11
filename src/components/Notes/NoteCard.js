@@ -27,27 +27,15 @@ const NoteCard = ({ title, body, id }) => {
 	};
 
 	// TODO: Hide actions only if menu isn't open
-	const hideActions = () => {
-		setIsActionVisible(false);
-	};
+	const hideActions = () => setIsActionVisible(false);
 
 	//Dialog
-	const closeDeleteDialog = () => {
-		setIsDialogOpen(false);
-	};
-
-	const openDeleteDialog = () => {
-		setIsDialogOpen(true);
-	};
+	const closeDeleteDialog = () => setIsDialogOpen(false);
+	const openDeleteDialog = () => setIsDialogOpen(true);
 
 	//Edit
-	const openEdit = () => {
-		setIsEditOpen(true);
-	};
-
-	const closeEdit = () => {
-		setIsEditOpen(false);
-	};
+	const openEdit = () => setIsEditOpen(true);
+	const closeEdit = () => setIsEditOpen(false);
 
 	const deleteNote = async (id) => {
 		await fetch(`http://localhost:5000/notes/${id}`, {

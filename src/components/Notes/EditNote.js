@@ -21,12 +21,8 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 		body: noteData.body,
 	});
 
-	const hideNotification = () => {
-		setIsNotificationOpen(false);
-	};
-	const showNotification = () => {
-		setIsNotificationOpen(true);
-	};
+	const hideNotification = () => setIsNotificationOpen(false);
+	const showNotification = () => setIsNotificationOpen(true);
 
 	const handleEditNote = (e) => {
 		setUpdatedNote((prev) => ({ ...prev, [e.target.name]: e.target.value }));

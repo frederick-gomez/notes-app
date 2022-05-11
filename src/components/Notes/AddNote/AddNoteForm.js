@@ -19,12 +19,8 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 		body: '',
 	});
 
-	const hideNotification = () => {
-		setIsNotificationOpen(false);
-	};
-	const showNotification = () => {
-		setIsNotificationOpen(true);
-	};
+	const hideNotification = () => setIsNotificationOpen(false);
+	const showNotification = () => setIsNotificationOpen(true);
 
 	const handleValueChange = (e) => {
 		setNoteData({

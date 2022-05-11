@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import db from '../../firebase';
+
 import NoteCard from './NoteCard';
 import Masonry from '@mui/lab/Masonry';
 import Stack from '@mui/material/Stack';
@@ -6,15 +9,22 @@ import Stack from '@mui/material/Stack';
 const NotesList = ({ isListView }) => {
 	const [notesList, setNotesList] = useState([]);
 
+	// const fetchNotes = async () => {
+	// 	const response = await fetch('http://localhost:5000/notes', {
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			Accept: 'application/json',
+	// 		},
+	// 	});
+	// 	const data = await response.json();
+	// 	setNotesList(data);
+	// };
+
 	const fetchNotes = async () => {
-		const response = await fetch('http://localhost:5000/notes', {
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json',
-			},
+		const querySnapshot = await getDocs(collection(db, 'notes'));
+		querySnapshot.forEach((doc) => {
+			console.log(doc.data());
 		});
-		const data = await response.json();
-		setNotesList(data);
 	};
 
 	useEffect(() => {

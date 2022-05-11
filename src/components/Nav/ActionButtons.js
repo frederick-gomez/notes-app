@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchBar from './SearchBar';
+import UserModal from '../Auth/UserModal';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
 
 //Material UI
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -19,34 +22,47 @@ const ActionButtons = ({
 	isListView,
 }) => {
 	const tabletSize = useMediaQuery('(max-width:599px)');
+	const [hasUser, setHasUser] = useState(false);
+
+	const [user] = useAuthState(auth);
+
+	const openUserModal = () => setHasUser(true);
+	const closeUserModal = () => setHasUser(false);
 
 	return (
-		<Stack direction='row'>
-			<SearchBar />
-			{!tabletSize && (
-				<Tooltip title={isListView ? 'Grid view' : 'List view'}>
-					<IconButton onClick={listViewHandler}>
-						{isListView ? (
-							<GridViewRoundedIcon fontSize='large' />
+		<>
+			<Stack direction='row'>
+				<SearchBar />
+				{!tabletSize && (
+					<Tooltip title={isListView ? 'Grid view' : 'List view'}>
+						<IconButton onClick={listViewHandler}>
+							{isListView ? (
+								<GridViewRoundedIcon fontSize='large' />
+							) : (
+								<ViewListRoundedIcon fontSize='large' />
+							)}
+						</IconButton>
+					</Tooltip>
+				)}
+				<Tooltip title={isDarkMode ? 'Enable light mode' : 'Enable dark mode'}>
+					<IconButton onClick={darkModeHandler}>
+						{isDarkMode ? (
+							<Brightness7Icon fontSize='large' />
 						) : (
-							<ViewListRoundedIcon fontSize='large' />
+							<Brightness4Icon fontSize='large' />
 						)}
 					</IconButton>
 				</Tooltip>
-			)}
-			<Tooltip title={isDarkMode ? 'Enable light mode' : 'Enable dark mode'}>
-				<IconButton onClick={darkModeHandler}>
-					{isDarkMode ? (
-						<Brightness7Icon fontSize='large' />
-					) : (
-						<Brightness4Icon fontSize='large' />
-					)}
-				</IconButton>
-			</Tooltip>
-			<IconButton>
-				<AccountCircleIcon fontSize='large' />
-			</IconButton>
-		</Stack>
+				{user && (
+					<Tooltip title='View account'>
+						<IconButton onClick={openUserModal}>
+							<AccountCircleIcon fontSize='large' />
+						</IconButton>
+					</Tooltip>
+				)}
+			</Stack>
+			<UserModal isOpen={hasUser} closeModal={closeUserModal} />
+		</>
 	);
 };
 
