@@ -22,12 +22,12 @@ const ActionButtons = ({
 	isListView,
 }) => {
 	const tabletSize = useMediaQuery('(max-width:599px)');
-	const [hasUser, setHasUser] = useState(false);
+	const [anchorEl, setAnchorEl] = useState(null);
+
+	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
+	const closeModal = () => setAnchorEl(null);
 
 	const [user] = useAuthState(auth);
-
-	const openUserModal = () => setHasUser(true);
-	const closeUserModal = () => setHasUser(false);
 
 	return (
 		<>
@@ -55,13 +55,13 @@ const ActionButtons = ({
 				</Tooltip>
 				{user && (
 					<Tooltip title='View account'>
-						<IconButton onClick={openUserModal}>
+						<IconButton onClick={selectAnchorEl}>
 							<AccountCircleIcon fontSize='large' />
 						</IconButton>
 					</Tooltip>
 				)}
 			</Stack>
-			<UserModal isOpen={hasUser} closeModal={closeUserModal} />
+			<UserModal closeModal={closeModal} anchorEl={anchorEl} />
 		</>
 	);
 };

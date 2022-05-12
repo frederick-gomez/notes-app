@@ -1,48 +1,65 @@
 import React from 'react';
-import { logout } from '../../firebase';
+import { logout, auth } from '../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Material UI
+import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
-const UserModal = ({ isOpen, closeModal }) => {
+const UserModal = ({ anchorEl, closeModal }) => {
+	const [user] = useAuthState(auth);
+
 	const modalStyle = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
 		minWidth: 300,
 		maxWidth: 500,
 		padding: 2,
 	};
 
-	return (
-		<Modal open={isOpen} onClose={closeModal}>
-			<Card sx={modalStyle}>
-				<CardHeader
-					title='Manage your account'
-					titleTypographyProps={{
-						component: 'h1',
-						variant: 'h5',
-						fontFamily: 'Open Sans',
-					}}
-					sx={{ paddingBottom: 0 }}
-					action={
-						<IconButton type='button' onClick={closeModal}>
-							<CloseIcon />
-						</IconButton>
-					}
-				/>
+	const isOpen = Boolean(anchorEl);
 
-				<CardContent></CardContent>
+	return (
+		<Popover
+			id='user-account'
+			open={isOpen}
+			anchorEl={anchorEl}
+			onClose={closeModal}
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'left',
+			}}
+			transformOrigin={{
+				vertical: 'top',
+				horizontal: 'right',
+			}}
+		>
+			<Card sx={modalStyle}>
+				<CardContent>
+					<Stack spacing={1} alignItems='center'>
+						<Avatar
+							sx={{ width: 56, height: 56 }}
+							alt={user?.displayName}
+							src={user?.photoURL}
+						/>
+						<Stack>
+							<Typography
+								align='center'
+								variant='h6'
+								sx={{ fontFamily: 'Open Sans' }}
+							>
+								{user?.displayName}
+							</Typography>
+							<Typography align='center' variant='body2'>
+								{user?.email}
+							</Typography>
+						</Stack>
+					</Stack>
+				</CardContent>
 
 				<CardActions>
 					<Button
@@ -55,7 +72,7 @@ const UserModal = ({ isOpen, closeModal }) => {
 					</Button>
 				</CardActions>
 			</Card>
-		</Modal>
+		</Popover>
 	);
 };
 

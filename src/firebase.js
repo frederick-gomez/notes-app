@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import {
 	getFirestore,
 	query,
-	getDocs,
+	getDoc,
 	collection,
 	where,
 	addDoc,
@@ -10,9 +10,6 @@ import {
 import {
 	getAuth,
 	GoogleAuthProvider,
-	signInWithEmailAndPassword,
-	createUserWithEmailAndPassword,
-	sendPasswordResetEmail,
 	signInWithRedirect,
 	signOut,
 } from 'firebase/auth';
@@ -34,53 +31,13 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-const logInWithEmailAndPassword = async (email, password) => {
-	try {
-		await signInWithEmailAndPassword(auth, email, password);
-	} catch (error) {
-		console.log(`${error.code} has ocurred: ${error.message}`);
-	}
-};
-
-//TODO: check if user is already registered
-const registerWithEmailAndPassword = async (name, email, password) => {
-	try {
-		const response = await createUserWithEmailAndPassword(
-			auth,
-			email,
-			password
-		);
-		const user = response.user;
-		await addDoc(collection(db, 'users'), {
-			uid: user.uid,
-			name,
-			authProvider: 'local',
-			email,
-		});
-	} catch (error) {
-		console.log(`${error.code} has ocurred: ${error.message}`);
-	}
-};
-
-//TODO: add a notification when completed
-const sendPasswordReset = async (email) => {
-	try {
-		await sendPasswordResetEmail(auth, email);
-		alert('Password reset link sent!');
-	} catch (error) {
-		const errorCode = error.code;
-		const errorMessage = error.message;
-		console.log(`${errorCode} has ocurred: ${errorMessage}`);
-	}
-};
-
 const signInWithGoogle = async () => {
 	try {
 		const response = await signInWithRedirect(auth, googleProvider);
 		const user = response.user;
 		const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-		const docs = await getDocs(q);
-		if (docs.docs.length === 0) {
+		const querySnapshot = await getDoc(q);
+		if (!querySnapshot.exists()) {
 			await addDoc(collection(db, 'users'), {
 				uid: user.uid,
 				name: user.displayName,
@@ -89,13 +46,7 @@ const signInWithGoogle = async () => {
 			});
 		}
 	} catch (error) {
-		const errorCode = error.code;
-		const errorMessage = error.message;
-
-		// The email of the user's account used.
-		// const email = error.email;
-
-		console.log(`${errorCode} has ocurred: ${errorMessage}`);
+		console.log(error.message);
 	}
 };
 
@@ -103,12 +54,5 @@ const logout = () => {
 	signOut(auth);
 };
 
-export {
-	auth,
-	signInWithGoogle,
-	logInWithEmailAndPassword,
-	registerWithEmailAndPassword,
-	sendPasswordReset,
-	logout,
-};
+export { auth, signInWithGoogle, logout };
 export default db;

@@ -10,13 +10,8 @@ import EditIcon from '@mui/icons-material/Edit';
 const NoteActions = ({ openEdit, showActions, setCurrentColor }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 
-	const selectAnchorEl = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const closePalette = () => {
-		setAnchorEl(null);
-	};
+	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
+	const closePalette = () => setAnchorEl(null);
 
 	return (
 		<>

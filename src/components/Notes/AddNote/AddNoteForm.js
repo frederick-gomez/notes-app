@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import FormInputs from './FormInputs';
 import Notification from '../../UI/Notification';
+import db, { auth } from '../../../firebase';
+import { collection, addDoc } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Material UI
 import Card from '@mui/material/Card';
@@ -29,14 +32,17 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 		});
 	};
 
+	const [user] = useAuthState(auth);
+
 	const saveNote = async (data) => {
-		await fetch('http://localhost:5000/notes', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-		});
+		try {
+			await addDoc(collection(db, 'users', user.uid, 'notes'), {
+				title: data.title,
+				body: data.body,
+			});
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const handleSubmit = (e) => {

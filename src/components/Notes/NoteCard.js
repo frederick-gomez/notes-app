@@ -37,15 +37,6 @@ const NoteCard = ({ title, body, id }) => {
 	const openEdit = () => setIsEditOpen(true);
 	const closeEdit = () => setIsEditOpen(false);
 
-	const deleteNote = async (id) => {
-		await fetch(`http://localhost:5000/notes/${id}`, {
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-	};
-
 	return (
 		<>
 			<Card
@@ -108,7 +99,7 @@ const NoteCard = ({ title, body, id }) => {
 			<DeleteDialog
 				isOpen={isDialogOpen}
 				handleClose={closeDeleteDialog}
-				deleteNote={() => deleteNote(id)}
+				noteId={id}
 			/>
 		</>
 	);

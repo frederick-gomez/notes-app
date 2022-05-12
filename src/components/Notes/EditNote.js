@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import db, { auth } from '../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Material UI
 import Modal from '@mui/material/Modal';
@@ -36,18 +39,21 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 		});
 	};
 
+	const [user] = useAuthState(auth);
+
 	const updateNote = async (e) => {
 		e.preventDefault();
-		await fetch(`http://localhost:5000/notes/${noteData.id}`, {
-			method: 'PUT',
-			body: JSON.stringify({
+
+		const noteDocRef = doc(db, 'users', user.uid, 'notes', noteData.id);
+		try {
+			await updateDoc(noteDocRef, {
 				title: updatedNote.title,
 				body: updatedNote.body,
-			}),
-			headers: {
-				'Content-type': 'application/json; charset=UTF-8',
-			},
-		});
+			});
+		} catch (err) {
+			console.log(err);
+		}
+
 		closeModal();
 		showNotification();
 	};

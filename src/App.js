@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import ThemeProviderCtx from './components/Context/ThemeContext';
 
@@ -10,7 +10,8 @@ import { auth } from './firebase';
 import Nav from './components/Nav/Nav';
 import NotesList from './components/Notes/NotesList';
 import AddNote from './components/Notes/AddNote/AddNote';
-import AccountForm from './components/Auth/AccountForm';
+import SignIn from './components/Auth/SignIn';
+import Register from './components/Auth/Register';
 
 //Material UI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -18,11 +19,10 @@ import createTheme from '@mui/material/styles/createTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 
 // TODO: Fix interaction in NoteCard for the visibility of the action buttons
+// TODO: style reset password modal
 // TODO: Update notes colors on theme change
 // TODO: Implement tags feature
 // TODO: Fix edit form in mobile view
-// TODO: Populate UserModal
-// ! Fix loading button on AccountForm
 // ? Use objects for colors
 
 const light = {
@@ -40,11 +40,43 @@ const dark = {
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
 	const [isListView, setIsListView] = useState(false);
-
-	const [user] = useAuthState(auth);
+	const [createAccountForm, setCreateAccountForm] = useState(false);
 
 	const listViewHandler = () => setIsListView(!isListView);
 	const darkModeHandler = () => setIsDarkMode(!isDarkMode);
+	const switchFormHandler = () => setCreateAccountForm(!createAccountForm);
+
+	useEffect(() => {
+		const currentTheme = localStorage.getItem('theme');
+		if (currentTheme) {
+			if (currentTheme === 'dark') {
+				setIsDarkMode(true);
+			} else {
+				setIsDarkMode(false);
+			}
+		} else {
+			let prefersDarkMode = window.matchMedia(
+				'(prefers-color-scheme: dark)'
+			).matches;
+			if (prefersDarkMode) {
+				setIsDarkMode(true);
+			} else {
+				setIsDarkMode(false);
+			}
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isDarkMode) {
+			localStorage.setItem('theme', 'dark');
+		} else {
+			localStorage.setItem('theme', 'light');
+		}
+	}, [isDarkMode]);
+
+	const [user] = useAuthState(auth);
+
+	console.log(user);
 
 	return (
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>
@@ -57,7 +89,12 @@ function App() {
 						isListView={isListView}
 					/>
 					<main className='container'>
-						{!user && <AccountForm />}
+						{!user && !createAccountForm && (
+							<SignIn switchForm={switchFormHandler} />
+						)}
+						{!user && createAccountForm && (
+							<Register switchForm={switchFormHandler} />
+						)}
 						{user && (
 							<>
 								<AddNote />

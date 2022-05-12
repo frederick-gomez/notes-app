@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import {
-	logInWithEmailAndPassword,
-	registerWithEmailAndPassword,
-	sendPasswordReset,
-	signInWithGoogle,
-} from '../../firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import db, { auth, signInWithGoogle } from '../../firebase';
+import useCheckErrors from '../../hooks/useCheckErrors';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -33,31 +31,43 @@ const validationSchema = Yup.object().shape({
 		.max(20, 'Password must not exceed 20 characters'),
 });
 
-const AccountForm = () => {
+const Register = ({ switchForm }) => {
 	const {
 		register,
 		handleSubmit,
-		reset,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(validationSchema),
 		shouldUnregister: true,
 	});
 
-	//Switch between loggin in and creating an account
-	const [isSigning, setIsSigning] = useState(true);
-	const switchModal = () => setIsSigning(!isSigning);
+	// const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
 
-	const submitForm = (data) => {
-		if (isSigning) {
-			logInWithEmailAndPassword(data.email, data.password);
-		} else {
-			registerWithEmailAndPassword(data.name, data.email, data.password);
+	//TODO: change form modal to login when succesful
+	const submitRegisterForm = async (data) => {
+		setLoading(true);
+		try {
+			const response = await createUserWithEmailAndPassword(
+				auth,
+				data.email,
+				data.password
+			);
+			const user = response.user;
+			await setDoc(doc(db, 'users', user.uid), {
+				uid: user.uid,
+				name: data.name,
+				email: data.email,
+				authProvider: 'local',
+			});
+		} catch (err) {
+			console.log(err.message);
+		} finally {
+			setLoading(false);
 		}
-		resetInputs();
 	};
 
-	const resetInputs = () => reset();
+	let errorMessage = null;
 
 	const modalStyle = {
 		position: 'absolute',
@@ -69,29 +79,14 @@ const AccountForm = () => {
 		padding: 2,
 	};
 
-	// Card body info
-	const signIn = {
-		title: 'Welcome back!',
-		subtitle: 'Sign in with your email',
-		emailButton: 'Sign in with email',
-		googleButton: 'Sign in with Google',
-		footer: "Don't have an account?",
-		footerButton: 'Register now',
-	};
-
-	const registerAccount = {
-		title: 'Create your account',
-		subtitle: 'Register with your email',
-		emailButton: 'Register with email',
-		googleButton: 'Register with Google',
-		footer: 'Already have an account?',
-		footerButton: 'Sign in',
-	};
-
 	return (
-		<Card sx={modalStyle} component='form' onSubmit={handleSubmit(submitForm)}>
+		<Card
+			sx={modalStyle}
+			component='form'
+			onSubmit={handleSubmit(submitRegisterForm)}
+		>
 			<CardHeader
-				title={isSigning ? signIn.title : registerAccount.title}
+				title='Create your account'
 				titleTypographyProps={{
 					component: 'h1',
 					variant: 'h5',
@@ -99,20 +94,18 @@ const AccountForm = () => {
 				}}
 				sx={{ paddingBottom: 0 }}
 			/>
+
 			<CardContent>
-				<Typography gutterBottom>
-					{isSigning ? signIn.subtitle : registerAccount.subtitle}
-				</Typography>
-				{!isSigning && (
-					<TextField
-						margin='dense'
-						id='name'
-						name='name'
-						label='Name'
-						fullWidth
-						{...register('name')}
-					/>
-				)}
+				<Typography gutterBottom>Register with your email</Typography>
+
+				<TextField
+					margin='dense'
+					id='name'
+					name='name'
+					label='Name'
+					fullWidth
+					{...register('name')}
+				/>
 				<TextField
 					margin='dense'
 					id='email'
@@ -123,6 +116,7 @@ const AccountForm = () => {
 					error={errors.email ? true : false}
 					helperText={errors.email?.message}
 				/>
+
 				<TextField
 					margin='dense'
 					id='password'
@@ -134,7 +128,9 @@ const AccountForm = () => {
 					error={errors.password ? true : false}
 					helperText={errors.password?.message}
 				/>
+				{errorMessage}
 			</CardContent>
+
 			<CardActions>
 				<Stack spacing={1} width='100%'>
 					<LoadingButton
@@ -142,9 +138,9 @@ const AccountForm = () => {
 						variant='contained'
 						color='primary'
 						startIcon={<EmailIcon />}
-						loading={false}
+						loading={loading}
 					>
-						{isSigning ? signIn.emailButton : registerAccount.emailButton}
+						Register with email
 					</LoadingButton>
 					<Typography align='center'>OR</Typography>
 					<Button
@@ -154,13 +150,11 @@ const AccountForm = () => {
 						startIcon={<GoogleIcon />}
 						onClick={signInWithGoogle}
 					>
-						{isSigning ? signIn.googleButton : registerAccount.googleButton}
+						Register with Google
 					</Button>
 					<Typography>
-						{isSigning ? signIn.footer : registerAccount.footer}
-						<Button onClick={switchModal}>
-							{isSigning ? signIn.footerButton : registerAccount.footerButton}
-						</Button>
+						Already have an account?
+						<Button onClick={switchForm}>Sign in</Button>
 					</Typography>
 				</Stack>
 			</CardActions>
@@ -168,4 +162,4 @@ const AccountForm = () => {
 	);
 };
 
-export default AccountForm;
+export default Register;

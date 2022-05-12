@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Notification from './Notification';
+import { doc, deleteDoc } from 'firebase/firestore';
+import db, { auth } from '../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Material UI
 import Button from '@mui/material/Button';
@@ -11,15 +14,27 @@ import DialogContentText from '@mui/material/DialogContentText';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const DeleteDialog = ({ isOpen, handleClose, deleteNote }) => {
+const DeleteDialog = ({ isOpen, handleClose, noteId }) => {
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
-	const hideNotification = () => {
-		setIsNotificationOpen(false);
+	const hideNotification = () => setIsNotificationOpen(false);
+	const showNotification = () => setIsNotificationOpen(true);
+
+	const [user] = useAuthState(auth);
+
+	const deleteNote = async (id) => {
+		const noteDocRef = doc(db, 'users', user.uid, 'notes', id);
+		try {
+			await deleteDoc(noteDocRef);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			showNotification();
+			handleClose();
+		}
 	};
-	const showNotification = () => {
-		setIsNotificationOpen(true);
-	};
+
+	// ? FIX: Notification doesn't show, the note component gets deleted with the notification
 	return (
 		<>
 			<Dialog
@@ -48,9 +63,7 @@ const DeleteDialog = ({ isOpen, handleClose, deleteNote }) => {
 						variant='contained'
 						color='error'
 						onClick={() => {
-							deleteNote();
-							handleClose();
-							showNotification();
+							deleteNote(noteId);
 						}}
 						autoFocus
 					>
