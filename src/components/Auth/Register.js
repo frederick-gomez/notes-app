@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import db, { auth, signInWithGoogle } from '../../firebase';
-import useCheckErrors from '../../hooks/useCheckErrors';
+// import useCheckErrors from '../../hooks/useCheckErrors';
 
 //Form Validation
 import { useForm } from 'react-hook-form';

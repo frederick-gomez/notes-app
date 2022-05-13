@@ -2,15 +2,16 @@ import { initializeApp } from 'firebase/app';
 import {
 	getFirestore,
 	query,
-	getDoc,
+	getDocs,
+	doc,
 	collection,
 	where,
-	addDoc,
+	setDoc,
 } from 'firebase/firestore';
 import {
 	getAuth,
+	signInWithPopup,
 	GoogleAuthProvider,
-	signInWithRedirect,
 	signOut,
 } from 'firebase/auth';
 
@@ -33,12 +34,12 @@ const googleProvider = new GoogleAuthProvider();
 
 const signInWithGoogle = async () => {
 	try {
-		const response = await signInWithRedirect(auth, googleProvider);
+		const response = await signInWithPopup(auth, googleProvider);
 		const user = response.user;
 		const q = query(collection(db, 'users'), where('uid', '==', user.uid));
-		const querySnapshot = await getDoc(q);
-		if (!querySnapshot.exists()) {
-			await addDoc(collection(db, 'users'), {
+		const querySnapshot = await getDocs(q);
+		if (querySnapshot.empty) {
+			await setDoc(doc(db, 'users', user.uid), {
 				uid: user.uid,
 				name: user.displayName,
 				authProvider: 'google',

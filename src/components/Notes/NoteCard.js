@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import DeleteDialog from '../UI/DeleteDialog';
 import EditNote from './EditNote';
 import NoteActions from './NoteActions';
+import DeleteDialog from './DeleteNote';
 
 //Material UI
 import Typography from '@mui/material/Typography';

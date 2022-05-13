@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import Notification from '../UI/Notification';
 
 //Material UI
 import Modal from '@mui/material/Modal';
@@ -15,9 +16,10 @@ import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
-import Notification from '../UI/Notification';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const EditNote = ({ isOpen, handleClose, noteData }) => {
+	const [isLoading, setIsLoading] = useState(false);
 	const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 	const [updatedNote, setUpdatedNote] = useState({
 		title: noteData.title,
@@ -43,7 +45,7 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 
 	const updateNote = async (e) => {
 		e.preventDefault();
-
+		setIsLoading(true);
 		const noteDocRef = doc(db, 'users', user.uid, 'notes', noteData.id);
 		try {
 			await updateDoc(noteDocRef, {
@@ -52,6 +54,8 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 			});
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setIsLoading(false);
 		}
 
 		closeModal();
@@ -125,14 +129,15 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 							>
 								Cancel
 							</Button>
-							<Button
+							<LoadingButton
 								type='submit'
 								variant='contained'
 								color='primary'
 								endIcon={<SaveIcon />}
+								loading={isLoading}
 							>
 								Save
-							</Button>
+							</LoadingButton>
 						</CardActions>
 					</Card>
 				</Grow>

@@ -48,9 +48,8 @@ const SignIn = ({ switchForm }) => {
 	const [signInWithEmailAndPassword, user, loading, error] =
 		useSignInWithEmailAndPassword(auth);
 
-	const submitSignInForm = (data) => {
+	const submitSignInForm = (data) =>
 		signInWithEmailAndPassword(data.email, data.password);
-	};
 
 	let errorMessage = useCheckErrors(error);
 

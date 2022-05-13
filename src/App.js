@@ -46,6 +46,9 @@ function App() {
 	const darkModeHandler = () => setIsDarkMode(!isDarkMode);
 	const switchFormHandler = () => setCreateAccountForm(!createAccountForm);
 
+	const [user] = useAuthState(auth);
+
+	//Both useEffect manage the app dark/light mode on init
 	useEffect(() => {
 		const currentTheme = localStorage.getItem('theme');
 		if (currentTheme) {
@@ -73,10 +76,6 @@ function App() {
 			localStorage.setItem('theme', 'light');
 		}
 	}, [isDarkMode]);
-
-	const [user] = useAuthState(auth);
-
-	console.log(user);
 
 	return (
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>

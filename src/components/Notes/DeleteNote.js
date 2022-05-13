@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Notification from './Notification';
+import Notification from '../UI/Notification';
 import { doc, deleteDoc } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
