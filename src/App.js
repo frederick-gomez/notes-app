@@ -46,7 +46,7 @@ function App() {
 	const darkModeHandler = () => setIsDarkMode(!isDarkMode);
 	const switchFormHandler = () => setCreateAccountForm(!createAccountForm);
 
-	const [user] = useAuthState(auth);
+	const [user, loading] = useAuthState(auth);
 
 	//Both useEffect manage the app dark/light mode on init
 	useEffect(() => {
@@ -88,13 +88,13 @@ function App() {
 						isListView={isListView}
 					/>
 					<main className='container'>
-						{!user && !createAccountForm && (
+						{!user && !createAccountForm && !loading && (
 							<SignIn switchForm={switchFormHandler} />
 						)}
 						{!user && createAccountForm && (
 							<Register switchForm={switchFormHandler} />
 						)}
-						{user && (
+						{user && !loading && (
 							<>
 								<AddNote />
 								<NotesList isListView={isListView} />

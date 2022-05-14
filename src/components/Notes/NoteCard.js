@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EditNote from './EditNote';
 import NoteActions from './NoteActions';
-import DeleteDialog from './DeleteNote';
+import DeleteNote from './DeleteNote';
 
 //Material UI
 import Typography from '@mui/material/Typography';
@@ -96,7 +96,7 @@ const NoteCard = ({ title, body, id }) => {
 				}}
 			/>
 
-			<DeleteDialog
+			<DeleteNote
 				isOpen={isDialogOpen}
 				handleClose={closeDeleteDialog}
 				noteId={id}

@@ -1,6 +1,7 @@
-import React from 'react';
-import { logout, auth } from '../../firebase';
+import React, { useState, useEffect, useCallback } from 'react';
+import db, { logout, auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 //Material UI
 import Popover from '@mui/material/Popover';
@@ -13,15 +14,35 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 
 const UserModal = ({ anchorEl, closeModal }) => {
+	const [userInfo, setUserInfo] = useState('');
 	const [user] = useAuthState(auth);
+
+	const isOpen = Boolean(anchorEl);
+
+	const fetchUserInfo = useCallback(async () => {
+		if (user) {
+			try {
+				const docRef = doc(db, 'users', user.uid);
+				const docSnap = await getDoc(docRef);
+				setUserInfo({
+					name: docSnap.data().name,
+					email: docSnap.data().email,
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	}, [user]);
+
+	useEffect(() => {
+		fetchUserInfo();
+	}, [fetchUserInfo]);
 
 	const modalStyle = {
 		minWidth: 300,
 		maxWidth: 500,
 		padding: 2,
 	};
-
-	const isOpen = Boolean(anchorEl);
 
 	return (
 		<Popover
@@ -43,7 +64,7 @@ const UserModal = ({ anchorEl, closeModal }) => {
 					<Stack spacing={1} alignItems='center'>
 						<Avatar
 							sx={{ width: 56, height: 56 }}
-							alt={user?.displayName}
+							alt={userInfo?.name}
 							src={user?.photoURL}
 						/>
 						<Stack>
@@ -52,10 +73,10 @@ const UserModal = ({ anchorEl, closeModal }) => {
 								variant='h6'
 								sx={{ fontFamily: 'Open Sans' }}
 							>
-								{user?.displayName}
+								{user?.displayName ? user?.displayName : userInfo?.name}
 							</Typography>
 							<Typography align='center' variant='body2'>
-								{user?.email}
+								{userInfo?.email}
 							</Typography>
 						</Stack>
 					</Stack>
@@ -64,8 +85,8 @@ const UserModal = ({ anchorEl, closeModal }) => {
 				<CardActions>
 					<Button
 						onClick={() => {
-							logout();
 							closeModal();
+							logout();
 						}}
 					>
 						Sign out

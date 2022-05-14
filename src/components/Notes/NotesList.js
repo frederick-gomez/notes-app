@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
 import NoteCard from './NoteCard';
+
+//Material UI
 import Masonry from '@mui/lab/Masonry';
 import Stack from '@mui/material/Stack';
 
@@ -12,23 +13,28 @@ const NotesList = ({ isListView }) => {
 
 	const [user] = useAuthState(auth);
 
-	const fetchNotes = async () => {
-		const q = collection(db, 'users', user.uid, 'notes');
-		onSnapshot(q, (querySnapshot) => {
-			setNotesList(
-				querySnapshot.docs.map((doc) => ({
-					id: doc.id,
-					title: doc.data().title,
-					body: doc.data().body,
-				}))
-			);
-		});
-	};
+	const fetchNotes = useCallback(async () => {
+		try {
+			const q = collection(db, 'users', user.uid, 'notes');
+			onSnapshot(q, (querySnapshot) => {
+				setNotesList(
+					querySnapshot.docs.map((doc) => ({
+						id: doc.id,
+						title: doc.data().title,
+						body: doc.data().body,
+					}))
+				);
+			});
+			console.log('read notes');
+		} catch (error) {
+			console.log(error);
+		}
+	}, [user.uid]);
 
 	useEffect(() => {
 		fetchNotes();
 		console.log('Render');
-	}, []);
+	}, [fetchNotes]);
 
 	if (isListView) {
 		return (

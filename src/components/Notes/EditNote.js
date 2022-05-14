@@ -58,7 +58,7 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 			setIsLoading(false);
 		}
 
-		closeModal();
+		handleClose();
 		showNotification();
 	};
 

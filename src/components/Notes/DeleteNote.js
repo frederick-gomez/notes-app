@@ -1,85 +1,83 @@
 import React, { useState } from 'react';
-import Notification from '../UI/Notification';
 import { doc, deleteDoc } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Material UI
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import Modal from '@mui/material/Modal';
+import CardActions from '@mui/material/CardActions';
+import CardHeader from '@mui/material/CardHeader';
+import Card from '@mui/material/Card';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-const DeleteDialog = ({ isOpen, handleClose, noteId }) => {
-	const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-
-	const hideNotification = () => setIsNotificationOpen(false);
-	const showNotification = () => setIsNotificationOpen(true);
+const DeleteNote = ({ isOpen, handleClose, noteId }) => {
+	const [isLoading, setIsLoading] = useState(false);
 
 	const [user] = useAuthState(auth);
 
 	const deleteNote = async (id) => {
+		setIsLoading(true);
 		const noteDocRef = doc(db, 'users', user.uid, 'notes', id);
 		try {
 			await deleteDoc(noteDocRef);
 		} catch (error) {
 			console.log(error);
 		} finally {
-			showNotification();
-			handleClose();
+			setIsLoading(false);
 		}
+		handleClose();
 	};
 
-	// ? FIX: Notification doesn't show, the note component gets deleted with the notification
+	const modalStyle = {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		minWidth: 300,
+		maxWidth: 500,
+		padding: 2,
+	};
+
 	return (
-		<>
-			<Dialog
-				open={isOpen}
-				onClose={handleClose}
-				PaperProps={{
-					style: { padding: 8 },
-				}}
-			>
-				<DialogTitle id='confirm-delete-dialog'>
-					{'Are you sure you want to delete this note?'}
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText>This action is permanent</DialogContentText>
-				</DialogContent>
-				<DialogActions>
+		<Modal open={isOpen} onClose={handleClose}>
+			<Card sx={modalStyle}>
+				<CardHeader
+					title='Are you sure you want to delete this note?'
+					titleTypographyProps={{
+						component: 'h1',
+						variant: 'h6',
+						fontFamily: 'Open Sans',
+					}}
+					subheader='This action is permanent!'
+				/>
+				<CardActions>
 					<Button
 						variant='outlined'
 						startIcon={<CloseIcon />}
+						sx={{ marginLeft: 'auto' }}
 						onClick={handleClose}
 					>
 						Cancel
 					</Button>
-					<Button
+					<LoadingButton
 						endIcon={<DeleteForeverIcon />}
 						variant='contained'
 						color='error'
+						loading={isLoading}
 						onClick={() => {
 							deleteNote(noteId);
 						}}
 						autoFocus
 					>
 						Delete
-					</Button>
-				</DialogActions>
-			</Dialog>
-			<Notification
-				isOpen={isNotificationOpen}
-				handleClose={hideNotification}
-				alertType='success'
-			>
-				Note deleted
-			</Notification>
-		</>
+					</LoadingButton>
+				</CardActions>
+			</Card>
+		</Modal>
 	);
 };
 
-export default DeleteDialog;
+export default DeleteNote;
