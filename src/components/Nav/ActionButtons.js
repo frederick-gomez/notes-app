@@ -3,6 +3,8 @@ import SearchBar from './SearchBar';
 import UserModal from '../Auth/UserModal';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
+import { useSelector, useDispatch } from 'react-redux';
+import { uiActions } from '../../store/reducers/uiReducer';
 
 //Material UI
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -15,19 +17,19 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 
-const ActionButtons = ({
-	darkModeHandler,
-	isDarkMode,
-	listViewHandler,
-	isListView,
-}) => {
+const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 	const tabletSize = useMediaQuery('(max-width:599px)');
 	const [anchorEl, setAnchorEl] = useState(null);
+	const [user] = useAuthState(auth);
 
+	//Manage open/close modal
 	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
 	const closeModal = () => setAnchorEl(null);
 
-	const [user] = useAuthState(auth);
+	//Redux
+	const dispatch = useDispatch();
+	const toggleListView = () => dispatch(uiActions.toggleListView());
+	const isListView = useSelector((state) => state.ui.isListView);
 
 	return (
 		<>
@@ -35,7 +37,7 @@ const ActionButtons = ({
 				<SearchBar />
 				{!tabletSize && (
 					<Tooltip title={isListView ? 'Grid view' : 'List view'}>
-						<IconButton onClick={listViewHandler}>
+						<IconButton onClick={toggleListView}>
 							{isListView ? (
 								<GridViewRoundedIcon fontSize='large' />
 							) : (

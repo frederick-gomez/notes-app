@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { uiActions } from '../../store/reducers/uiReducer';
 
 //Material UI
 import Drawer from '@mui/material/Drawer';
@@ -11,10 +13,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import LabelIcon from '@mui/icons-material/Label';
 import ArchiveIcon from '@mui/icons-material/Archive';
 
 const SideMenu = ({ isOpen, toggleDrawer }) => {
+	const dispatch = useDispatch();
+	const viewFiledNotes = () => dispatch(uiActions.viewFiledNotes());
+	const viewNotes = () => dispatch(uiActions.viewNotes());
+
 	return (
 		<Drawer
 			open={isOpen}
@@ -23,14 +28,15 @@ const SideMenu = ({ isOpen, toggleDrawer }) => {
 			onClose={toggleDrawer}
 			sx={{
 				alignContent: 'flex-end',
-			}}>
+			}}
+		>
 			<IconButton onClick={toggleDrawer}>
 				<ChevronLeftIcon fontSize='large' />
 			</IconButton>
 			<Divider />
 			<List>
 				<ListItem>
-					<ListItemButton>
+					<ListItemButton onClick={viewNotes}>
 						<ListItemIcon>
 							<TextSnippetIcon />
 						</ListItemIcon>
@@ -39,16 +45,7 @@ const SideMenu = ({ isOpen, toggleDrawer }) => {
 				</ListItem>
 
 				<ListItem>
-					<ListItemButton>
-						<ListItemIcon>
-							<LabelIcon />
-						</ListItemIcon>
-						<ListItemText primary='Labels' />
-					</ListItemButton>
-				</ListItem>
-
-				<ListItem>
-					<ListItemButton>
+					<ListItemButton onClick={viewFiledNotes}>
 						<ListItemIcon>
 							<ArchiveIcon />
 						</ListItemIcon>

@@ -1,16 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { collection, onSnapshot, where, query } from 'firebase/firestore';
-import db, { auth } from '../../firebase';
+import db, { auth } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import NoteCard from './NoteCard';
+import NoteCard from '../NoteCard';
+import NotesContainer from '../../UI/NotesContainer';
 
-//Material UI
-import Masonry from '@mui/lab/Masonry';
-import Stack from '@mui/material/Stack';
-
-const NotesList = ({ isListView }) => {
+const NotesList = () => {
 	const [notesList, setNotesList] = useState([]);
-
 	const [user] = useAuthState(auth);
 
 	const fetchNotes = useCallback(async () => {
@@ -36,39 +32,13 @@ const NotesList = ({ isListView }) => {
 		fetchNotes();
 	}, [fetchNotes]);
 
-	if (isListView) {
-		return (
-			<Stack
-				spacing={3}
-				sx={{
-					maxWidth: 600,
-					marginLeft: 'auto',
-					marginRight: 'auto',
-				}}
-			>
-				{notesList.map((note) => (
-					<NoteCard
-						key={note.id}
-						id={note.id}
-						title={note.title}
-						body={note.body}
-					/>
-				))}
-			</Stack>
-		);
-	} else {
-		return (
-			<Masonry
-				sx={{ margin: 0, alignContent: 'center' }}
-				columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
-				spacing={3}
-			>
-				{notesList.map((note) => (
-					<NoteCard key={note.id} noteData={note} />
-				))}
-			</Masonry>
-		);
-	}
+	return (
+		<NotesContainer>
+			{notesList.map((note) => (
+				<NoteCard key={note.id} noteData={note} />
+			))}
+		</NotesContainer>
+	);
 };
 
 export default NotesList;

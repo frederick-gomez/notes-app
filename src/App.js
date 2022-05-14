@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import ThemeProviderCtx from './components/Context/ThemeContext';
+import { useSelector } from 'react-redux';
 
 //Auth
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -8,7 +9,8 @@ import { auth } from './firebase';
 
 //Components
 import Nav from './components/Nav/Nav';
-import NotesList from './components/Notes/NotesList';
+import NotesList from './components/Notes/NotesLists/NotesList';
+import FiledNotesList from './components/Notes/NotesLists/FiledNotesList';
 import AddNote from './components/Notes/AddNote/AddNote';
 import SignIn from './components/Auth/SignIn';
 import Register from './components/Auth/Register';
@@ -39,14 +41,13 @@ const dark = {
 
 function App() {
 	const [isDarkMode, setIsDarkMode] = useState(false);
-	const [isListView, setIsListView] = useState(false);
 	const [createAccountForm, setCreateAccountForm] = useState(false);
+	const [user, loading] = useAuthState(auth);
 
-	const listViewHandler = () => setIsListView(!isListView);
+	const isFiledNotes = useSelector((state) => state.ui.isFiledNotes);
+
 	const darkModeHandler = () => setIsDarkMode(!isDarkMode);
 	const switchFormHandler = () => setCreateAccountForm(!createAccountForm);
-
-	const [user, loading] = useAuthState(auth);
 
 	//Both useEffect manage the app dark/light mode on init
 	useEffect(() => {
@@ -81,12 +82,7 @@ function App() {
 		<ThemeProvider theme={isDarkMode ? createTheme(dark) : createTheme(light)}>
 			<CssBaseline enableColorScheme>
 				<ThemeProviderCtx value={isDarkMode}>
-					<Nav
-						darkModeHandler={darkModeHandler}
-						isDarkMode={isDarkMode}
-						listViewHandler={listViewHandler}
-						isListView={isListView}
-					/>
+					<Nav darkModeHandler={darkModeHandler} isDarkMode={isDarkMode} />
 					<main className='container'>
 						{!user && !createAccountForm && !loading && (
 							<SignIn switchForm={switchFormHandler} />
@@ -97,7 +93,7 @@ function App() {
 						{user && !loading && (
 							<>
 								<AddNote />
-								<NotesList isListView={isListView} />
+								{isFiledNotes ? <FiledNotesList /> : <NotesList />}
 							</>
 						)}
 					</main>
