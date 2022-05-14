@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import ThemeContext from '../Context/ThemeContext';
+import { ThemeContext } from '../Context/ThemeContext';
 
 //Material UI
 import Popper from '@mui/material/Popper';
@@ -51,7 +51,8 @@ const NotesPalette = ({ onClose, anchorEl, selectColor }) => {
 						direction='row'
 						sx={{
 							p: 1,
-						}}>
+						}}
+					>
 						<IconButton
 							key={'noColor'}
 							onClick={() => {
@@ -60,7 +61,8 @@ const NotesPalette = ({ onClose, anchorEl, selectColor }) => {
 							sx={{
 								backgroundColor: '#dfdfdf',
 								margin: '5px 0 5px 0',
-							}}>
+							}}
+						>
 							<InvertColorsOffIcon />
 						</IconButton>
 						{currentColorTheme.map((color) => {
@@ -74,7 +76,8 @@ const NotesPalette = ({ onClose, anchorEl, selectColor }) => {
 										color: `${color}`,
 										backgroundColor: `${color}`,
 										margin: '5px 0 5px 0',
-									}}>
+									}}
+								>
 									<ColorizeIcon />
 								</IconButton>
 							);

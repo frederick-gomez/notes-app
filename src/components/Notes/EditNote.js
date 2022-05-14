@@ -46,8 +46,8 @@ const EditNote = ({ isOpen, handleClose, noteData }) => {
 	const updateNote = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
-		const noteDocRef = doc(db, 'users', user.uid, 'notes', noteData.id);
 		try {
+			const noteDocRef = doc(db, 'users', user.uid, 'notes', noteData.id);
 			await updateDoc(noteDocRef, {
 				title: updatedNote.title,
 				body: updatedNote.body,

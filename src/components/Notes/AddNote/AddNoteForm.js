@@ -39,6 +39,7 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 			await addDoc(collection(db, 'users', user.uid, 'notes'), {
 				title: data.title,
 				body: data.body,
+				isFiled: false,
 			});
 		} catch (err) {
 			console.log(err);

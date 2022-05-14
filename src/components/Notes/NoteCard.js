@@ -15,19 +15,16 @@ import Fade from '@mui/material/Fade';
 //Icons
 import ClearIcon from '@mui/icons-material/Clear';
 
-const NoteCard = ({ title, body, id }) => {
+const NoteCard = ({ noteData }) => {
 	const [isActionVisible, setIsActionVisible] = useState(false);
 	const [currentColor, setCurrentColor] = useState(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isEditOpen, setIsEditOpen] = useState(false);
 
 	//Card action buttons
-	const showActions = () => {
-		setIsActionVisible(true);
-	};
-
 	// TODO: Hide actions only if menu isn't open
-	const hideActions = () => setIsActionVisible(false);
+	const showActions = () => setIsActionVisible(true);
+	// const hideActions = () => setIsActionVisible(false);
 
 	//Dialog
 	const closeDeleteDialog = () => setIsDialogOpen(false);
@@ -41,7 +38,7 @@ const NoteCard = ({ title, body, id }) => {
 		<>
 			<Card
 				onMouseEnter={showActions}
-				onMouseLeave={hideActions}
+				// onMouseLeave={hideActions}
 				elevation={3}
 				sx={{
 					maxWidth: 600,
@@ -49,7 +46,7 @@ const NoteCard = ({ title, body, id }) => {
 				}}
 			>
 				<CardHeader
-					title={title}
+					title={noteData.title}
 					titleTypographyProps={{
 						component: 'h1',
 						variant: 'h6',
@@ -67,7 +64,7 @@ const NoteCard = ({ title, body, id }) => {
 						paddingTop: 0,
 					}}
 				>
-					<Typography variant='body2'>{body}</Typography>
+					<Typography variant='body2'>{noteData.body}</Typography>
 				</CardContent>
 
 				<Fade in={isActionVisible} timeout={400}>
@@ -81,6 +78,8 @@ const NoteCard = ({ title, body, id }) => {
 							openEdit={openEdit}
 							showActions={showActions}
 							setCurrentColor={setCurrentColor}
+							noteId={noteData.id}
+							isFiled={noteData.isFiled}
 						/>
 					</CardActions>
 				</Fade>
@@ -89,17 +88,13 @@ const NoteCard = ({ title, body, id }) => {
 			<EditNote
 				isOpen={isEditOpen}
 				handleClose={closeEdit}
-				noteData={{
-					title,
-					body,
-					id,
-				}}
+				noteData={noteData}
 			/>
 
 			<DeleteNote
 				isOpen={isDialogOpen}
 				handleClose={closeDeleteDialog}
-				noteId={id}
+				noteId={noteData.id}
 			/>
 		</>
 	);

@@ -8,4 +8,5 @@ const ThemeProviderCtx = ({ children, value }) => {
 	);
 };
 
+export { ThemeContext };
 export default ThemeProviderCtx;

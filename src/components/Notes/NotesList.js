@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, where, query } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import NoteCard from './NoteCard';
@@ -15,17 +15,18 @@ const NotesList = ({ isListView }) => {
 
 	const fetchNotes = useCallback(async () => {
 		try {
-			const q = collection(db, 'users', user.uid, 'notes');
+			const notesRef = collection(db, 'users', user.uid, 'notes');
+			const q = query(notesRef, where('isFiled', '==', false));
 			onSnapshot(q, (querySnapshot) => {
 				setNotesList(
 					querySnapshot.docs.map((doc) => ({
 						id: doc.id,
 						title: doc.data().title,
 						body: doc.data().body,
+						isFiled: doc.data().isFiled,
 					}))
 				);
 			});
-			console.log('read notes');
 		} catch (error) {
 			console.log(error);
 		}
@@ -33,7 +34,6 @@ const NotesList = ({ isListView }) => {
 
 	useEffect(() => {
 		fetchNotes();
-		console.log('Render');
 	}, [fetchNotes]);
 
 	if (isListView) {
@@ -64,12 +64,7 @@ const NotesList = ({ isListView }) => {
 				spacing={3}
 			>
 				{notesList.map((note) => (
-					<NoteCard
-						key={note.id}
-						id={note.id}
-						title={note.title}
-						body={note.body}
-					/>
+					<NoteCard key={note.id} noteData={note} />
 				))}
 			</Masonry>
 		);
