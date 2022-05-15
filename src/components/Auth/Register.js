@@ -62,8 +62,6 @@ const Register = ({ switchForm }) => {
 			});
 		} catch (err) {
 			console.log(err.message);
-		} finally {
-			setLoading(false);
 		}
 	};
 

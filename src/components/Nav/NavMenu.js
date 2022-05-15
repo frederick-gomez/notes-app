@@ -18,25 +18,19 @@ const NavMenu = ({ toggleDrawer }) => {
 				<IconButton aria-label='menu' onClick={toggleDrawer}>
 					<MenuIcon />
 				</IconButton>
-				{isFiledNotes ? (
-					<Typography variant='h6' component='h1' noWrap>
-						Filed Notes
-					</Typography>
-				) : (
-					<>
-						<Box
-							component='img'
-							src={Logo}
-							alt='Logo'
-							sx={{
-								width: '50px',
-							}}
-						/>
-						<Typography variant='h6' component='h1'>
-							Notes
-						</Typography>
-					</>
+				{!isFiledNotes && (
+					<Box
+						component='img'
+						src={Logo}
+						alt='Logo'
+						sx={{
+							width: '50px',
+						}}
+					/>
 				)}
+				<Typography variant='h6' component='h1' noWrap>
+					{isFiledNotes ? 'Filed Notes' : 'Notes'}
+				</Typography>
 			</Stack>
 		</>
 	);

@@ -11,13 +11,7 @@ import PaletteIcon from '@mui/icons-material/Palette';
 import EditIcon from '@mui/icons-material/Edit';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
 
-const NoteActions = ({
-	openEdit,
-	showActions,
-	setCurrentColor,
-	noteId,
-	isFiled,
-}) => {
+const NoteActions = ({ openEdit, setCurrentColor, noteId, isFiled }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 
 	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
@@ -51,7 +45,6 @@ const NoteActions = ({
 			<IconButton
 				onClick={(e) => {
 					selectAnchorEl(e);
-					showActions();
 				}}
 			>
 				<PaletteIcon />
