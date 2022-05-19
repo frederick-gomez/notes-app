@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import {
+	NoteViewContext,
+	NoteViewDispatchContext,
+} from '../Context/NoteViewContext';
 import SearchBar from './SearchBar';
 import UserModal from '../Auth/UserModal';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
-import { useSelector, useDispatch } from 'react-redux';
-import { uiActions } from '../../store/reducers/uiReducer';
 
 //Material UI
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -22,14 +24,12 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [user] = useAuthState(auth);
 
+	const isListView = useContext(NoteViewContext);
+	const setIsListView = useContext(NoteViewDispatchContext);
+
 	//Manage open/close modal
 	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
 	const closeModal = () => setAnchorEl(null);
-
-	//Redux
-	const dispatch = useDispatch();
-	const toggleListView = () => dispatch(uiActions.toggleListView());
-	const isListView = useSelector((state) => state.ui.isListView);
 
 	return (
 		<>
@@ -37,7 +37,7 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 				<SearchBar />
 				{!tabletSize && (
 					<Tooltip title={isListView ? 'Grid view' : 'List view'}>
-						<IconButton onClick={toggleListView}>
+						<IconButton onClick={() => setIsListView(!isListView)}>
 							{isListView ? (
 								<GridViewRoundedIcon fontSize='large' />
 							) : (

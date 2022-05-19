@@ -23,7 +23,6 @@ const SearchBar = () => {
 				component='form'
 				sx={{
 					maxWidth: 500,
-					flexGrow: 1,
 					marginLeft: 1,
 				}}
 			>

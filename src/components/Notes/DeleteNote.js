@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { doc, deleteDoc } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -11,24 +11,17 @@ import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import LoadingButton from '@mui/lab/LoadingButton';
 
 const DeleteNote = ({ isOpen, handleClose, noteId }) => {
-	const [isLoading, setIsLoading] = useState(false);
-
 	const [user] = useAuthState(auth);
 
 	const deleteNote = async (id) => {
-		setIsLoading(true);
 		const noteDocRef = doc(db, 'users', user.uid, 'notes', id);
 		try {
 			await deleteDoc(noteDocRef);
 		} catch (error) {
 			console.log(error);
-		} finally {
-			setIsLoading(false);
 		}
-		handleClose();
 	};
 
 	const modalStyle = {
@@ -62,18 +55,17 @@ const DeleteNote = ({ isOpen, handleClose, noteId }) => {
 					>
 						Cancel
 					</Button>
-					<LoadingButton
+					<Button
 						endIcon={<DeleteForeverIcon />}
 						variant='contained'
 						color='error'
-						loading={isLoading}
 						onClick={() => {
 							deleteNote(noteId);
 						}}
 						autoFocus
 					>
 						Delete
-					</LoadingButton>
+					</Button>
 				</CardActions>
 			</Card>
 		</Modal>

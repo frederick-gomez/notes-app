@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
 import NavMenu from './NavMenu';
 import ActionButtons from './ActionButtons';
 import SideMenu from './SideMenu';
@@ -12,6 +14,8 @@ const Nav = ({ darkModeHandler, isDarkMode }) => {
 	const [isDrawerOpen, setisDrawerOpen] = useState(false);
 	const toggleDrawer = () => setisDrawerOpen(!isDrawerOpen);
 
+	const [user] = useAuthState(auth);
+
 	return (
 		<Box component='nav' mb={11} sx={{ flexGrow: 1 }}>
 			<AppBar position='fixed' color='inherit'>
@@ -20,9 +24,11 @@ const Nav = ({ darkModeHandler, isDarkMode }) => {
 						justifyContent: 'space-between',
 					}}
 				>
-					<SideMenu isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+					{user && (
+						<SideMenu isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+					)}
 
-					<NavMenu toggleDrawer={toggleDrawer} />
+					<NavMenu toggleDrawer={toggleDrawer} user={user} />
 
 					<ActionButtons
 						darkModeHandler={darkModeHandler}

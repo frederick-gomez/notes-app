@@ -16,6 +16,13 @@ const useCheckErrors = (error) => {
 	if (error?.message.includes('auth/user-not-found')) {
 		return <Box sx={errorStyle}>User doesn't exist</Box>;
 	}
+	if (error?.message.includes('auth/network-request-failed')) {
+		return (
+			<Box sx={errorStyle}>
+				Network request failed. <br /> Check your internet connection.
+			</Box>
+		);
+	}
 	if (error?.message.includes('auth/too-many-requests')) {
 		return (
 			<Box sx={errorStyle}>

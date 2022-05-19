@@ -14,6 +14,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 const validationSchema = Yup.object().shape({
@@ -63,6 +64,9 @@ const ResetPasswordModal = ({ isOpen, handleClose }) => {
 			</DialogContent>
 
 			<DialogActions>
+				<Button color='error' variant='outlined' onClick={handleClose}>
+					Cancel
+				</Button>
 				<LoadingButton
 					type='submit'
 					variant='contained'

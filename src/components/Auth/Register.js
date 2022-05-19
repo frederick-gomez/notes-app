@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import db, { auth, signInWithGoogle } from '../../firebase';
-// import useCheckErrors from '../../hooks/useCheckErrors';
+import { useNavigate } from 'react-router-dom';
+import useCheckErrors from '../../hooks/useCheckErrors';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -41,18 +43,17 @@ const Register = ({ switchForm }) => {
 		shouldUnregister: true,
 	});
 
-	// const [error, setError] = useState('');
+	const navigate = useNavigate();
+
+	const [user] = useAuthState(auth);
+
+	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	//TODO: change form modal to login when succesful
 	const submitRegisterForm = async (data) => {
 		setLoading(true);
 		try {
-			const response = await createUserWithEmailAndPassword(
-				auth,
-				data.email,
-				data.password
-			);
+			const response = await createUserWithEmailAndPassword(auth, data.email, data.password);
 			const user = response.user;
 			await setDoc(doc(db, 'users', user.uid), {
 				uid: user.uid,
@@ -61,11 +62,19 @@ const Register = ({ switchForm }) => {
 				authProvider: 'local',
 			});
 		} catch (err) {
-			console.log(err.message);
+			setLoading(false);
+			setError(err);
 		}
 	};
 
-	let errorMessage = null;
+	//Redirect if succesful
+	useEffect(() => {
+		if (user) {
+			navigate('/notes', { replace: true });
+		}
+	}, [user, navigate]);
+
+	let errorMessage = useCheckErrors(error);
 
 	const modalStyle = {
 		position: 'absolute',
@@ -78,11 +87,7 @@ const Register = ({ switchForm }) => {
 	};
 
 	return (
-		<Card
-			sx={modalStyle}
-			component='form'
-			onSubmit={handleSubmit(submitRegisterForm)}
-		>
+		<Card sx={modalStyle} component='form' onSubmit={handleSubmit(submitRegisterForm)}>
 			<CardHeader
 				title='Create your account'
 				titleTypographyProps={{

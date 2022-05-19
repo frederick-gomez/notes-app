@@ -1,11 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { uiActions } from '../../store/reducers/uiReducer';
+import { NavLink } from 'react-router-dom';
 
 //Material UI
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -16,10 +13,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ArchiveIcon from '@mui/icons-material/Archive';
 
 const SideMenu = ({ isOpen, toggleDrawer }) => {
-	const dispatch = useDispatch();
-	const viewFiledNotes = () => dispatch(uiActions.viewFiledNotes());
-	const viewNotes = () => dispatch(uiActions.viewNotes());
-
 	return (
 		<Drawer
 			open={isOpen}
@@ -30,13 +23,19 @@ const SideMenu = ({ isOpen, toggleDrawer }) => {
 				alignContent: 'flex-end',
 			}}
 		>
-			<IconButton onClick={toggleDrawer}>
-				<ChevronLeftIcon fontSize='large' />
-			</IconButton>
-			<Divider />
-			<List>
+			<List disablePadding>
+				<ListItem disableGutters>
+					<ListItemButton divider onClick={toggleDrawer}>
+						<ChevronLeftIcon fontSize='large' />
+					</ListItemButton>
+				</ListItem>
+
 				<ListItem>
-					<ListItemButton onClick={viewNotes}>
+					<ListItemButton
+						component={NavLink}
+						to='/notes'
+						onClick={toggleDrawer}
+					>
 						<ListItemIcon>
 							<TextSnippetIcon />
 						</ListItemIcon>
@@ -45,7 +44,11 @@ const SideMenu = ({ isOpen, toggleDrawer }) => {
 				</ListItem>
 
 				<ListItem>
-					<ListItemButton onClick={viewFiledNotes}>
+					<ListItemButton
+						component={NavLink}
+						to='/filednotes'
+						onClick={toggleDrawer}
+					>
 						<ListItemIcon>
 							<ArchiveIcon />
 						</ListItemIcon>

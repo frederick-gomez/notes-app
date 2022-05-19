@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import db, { logout, auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 //Material UI
 import Popover from '@mui/material/Popover';
@@ -16,6 +17,7 @@ import Button from '@mui/material/Button';
 const UserModal = ({ anchorEl, closeModal }) => {
 	const [userInfo, setUserInfo] = useState('');
 	const [user] = useAuthState(auth);
+	const navigate = useNavigate();
 
 	const isOpen = Boolean(anchorEl);
 
@@ -37,6 +39,12 @@ const UserModal = ({ anchorEl, closeModal }) => {
 	useEffect(() => {
 		fetchUserInfo();
 	}, [fetchUserInfo]);
+
+	const signOut = () => {
+		navigate('/auth', { replace: true });
+		closeModal();
+		logout();
+	};
 
 	const modalStyle = {
 		minWidth: 300,
@@ -83,14 +91,7 @@ const UserModal = ({ anchorEl, closeModal }) => {
 				</CardContent>
 
 				<CardActions>
-					<Button
-						onClick={() => {
-							closeModal();
-							logout();
-						}}
-					>
-						Sign out
-					</Button>
+					<Button onClick={signOut}>Sign out</Button>
 				</CardActions>
 			</Card>
 		</Popover>

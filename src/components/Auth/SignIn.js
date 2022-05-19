@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth, signInWithGoogle } from '../../firebase';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -45,11 +46,25 @@ const SignIn = ({ switchForm }) => {
 	const openModal = () => setIsResetModal(true);
 	const closeModal = () => setIsResetModal(false);
 
+	const navigate = useNavigate();
+
 	const [signInWithEmailAndPassword, user, loading, error] =
 		useSignInWithEmailAndPassword(auth);
 
-	const submitSignInForm = (data) =>
-		signInWithEmailAndPassword(data.email, data.password);
+	const submitSignInForm = (data) => {
+		try {
+			signInWithEmailAndPassword(data.email, data.password);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	//Redirect if succesful
+	useEffect(() => {
+		if (user) {
+			navigate('/notes', { replace: true });
+		}
+	}, [user, navigate]);
 
 	let errorMessage = useCheckErrors(error);
 

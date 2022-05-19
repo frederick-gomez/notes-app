@@ -1,12 +1,11 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
+import React, { useContext } from 'react';
+import { NoteViewContext } from '../Context/NoteViewContext';
 //Material UI
 import Masonry from '@mui/lab/Masonry';
 import Stack from '@mui/material/Stack';
 
 const NotesContainer = ({ children }) => {
-	const isListView = useSelector((state) => state.ui.isListView);
+	const isListView = useContext(NoteViewContext);
 
 	if (isListView) {
 		return (
