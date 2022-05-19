@@ -1,12 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../../firebase';
+import { Navigate } from 'react-router-dom';
 
+//Material UI
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const Home = () => {
+	const [user] = useAuthState(auth);
+
+	if (user) {
+		return <Navigate to='/notes' replace />;
+	}
+
 	const paperStyle = {
 		position: 'absolute',
 		top: '50%',
