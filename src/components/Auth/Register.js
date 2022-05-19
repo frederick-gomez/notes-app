@@ -68,8 +68,6 @@ const Register = () => {
 		}
 	};
 
-	console.log(user);
-
 	//Redirect if succesful
 	useEffect(() => {
 		if (user) {
