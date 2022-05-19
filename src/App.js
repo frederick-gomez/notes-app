@@ -21,7 +21,6 @@ import Container from '@mui/material/Container';
 
 // TODO: style reset password modal
 // TODO: Implement tags feature
-// TODO: Fix edit form in mobile view
 // TODO: Unsuscribe all listeners in logout
 
 const light = {
