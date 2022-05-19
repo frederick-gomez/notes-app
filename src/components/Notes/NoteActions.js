@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import NotesPalette from './NotesPalette';
 
 //Material UI
 import IconButton from '@mui/material/IconButton';
 import ArchiveIcon from '@mui/icons-material/Archive';
-import PaletteIcon from '@mui/icons-material/Palette';
 import EditIcon from '@mui/icons-material/Edit';
 import UnarchiveIcon from '@mui/icons-material/Unarchive';
+import Tooltip from '@mui/material/Tooltip';
 
-const NoteActions = ({ openEdit, setCurrentColor, noteId, isFiled }) => {
-	const [anchorEl, setAnchorEl] = useState(null);
-
-	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
-	const closePalette = () => setAnchorEl(null);
-
+const NoteActions = ({ openEdit, noteId, isFiled }) => {
 	const [user] = useAuthState(auth);
 
 	const filedNoteHandler = async () => {
@@ -33,32 +27,23 @@ const NoteActions = ({ openEdit, setCurrentColor, noteId, isFiled }) => {
 	return (
 		<>
 			{isFiled ? (
-				<IconButton onClick={filedNoteHandler}>
-					<UnarchiveIcon />
-				</IconButton>
+				<Tooltip title='Unarchive note'>
+					<IconButton onClick={filedNoteHandler}>
+						<UnarchiveIcon />
+					</IconButton>
+				</Tooltip>
 			) : (
-				<IconButton onClick={filedNoteHandler}>
-					<ArchiveIcon />
-				</IconButton>
+				<Tooltip title='Archive note'>
+					<IconButton onClick={filedNoteHandler}>
+						<ArchiveIcon />
+					</IconButton>
+				</Tooltip>
 			)}
-
-			<IconButton
-				onClick={(e) => {
-					selectAnchorEl(e);
-				}}
-			>
-				<PaletteIcon />
-			</IconButton>
-
-			<NotesPalette
-				onClose={closePalette}
-				anchorEl={anchorEl}
-				selectColor={setCurrentColor}
-			/>
-
-			<IconButton onClick={openEdit}>
-				<EditIcon />
-			</IconButton>
+			<Tooltip title='Edit note'>
+				<IconButton onClick={openEdit}>
+					<EditIcon />
+				</IconButton>
+			</Tooltip>
 		</>
 	);
 };

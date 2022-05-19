@@ -7,23 +7,22 @@ import { Routes, Route } from 'react-router-dom';
 //Components
 import Nav from './components/Nav/Nav';
 import NotesList from './components/Pages/NotesList';
-import FiledNotesList from './components/Pages/FiledNotesList';
+import ArchiveNotes from './components/Pages/ArchiveNotes';
+import Home from './components/Pages/Home';
+import SignIn from './components/Auth/SignIn';
+import Register from './components/Auth/Register';
+import RequiredLogin from './components/Pages/RequiredLogin';
 
 //Material UI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import createTheme from '@mui/material/styles/createTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-import AuthPage from './components/Pages/AuthPage';
-import Home from './components/Pages/Home';
-import { Container } from '@mui/material';
+import Container from '@mui/material/Container';
 
-// TODO: Fix interaction in NoteCard for the visibility of the action buttons
 // TODO: style reset password modal
-// TODO: Update notes colors on theme change
 // TODO: Implement tags feature
 // TODO: Fix edit form in mobile view
 // TODO: Unsuscribe all listeners in logout
-// ? Use objects for colors
 
 const light = {
 	palette: {
@@ -78,9 +77,12 @@ function App() {
 						<Container maxWidth='xl' component='main'>
 							<Routes>
 								<Route path='/' element={<Home />} />
-								<Route path='/auth' element={<AuthPage />} />
-								<Route path='/notes' element={<NotesList />} />
-								<Route path='/filednotes' element={<FiledNotesList />} />
+								<Route path='/login' element={<SignIn />} />
+								<Route path='/register' element={<Register />} />
+								<Route element={<RequiredLogin />}>
+									<Route path='/notes' element={<NotesList />} />
+									<Route path='/archive' element={<ArchiveNotes />} />
+								</Route>
 							</Routes>
 						</Container>
 					</NoteViewProvider>

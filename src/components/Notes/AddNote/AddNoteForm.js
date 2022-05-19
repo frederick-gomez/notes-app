@@ -68,18 +68,10 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 	return (
 		<>
 			<Collapse in={isOpen}>
-				<Card
-					onSubmit={handleSubmit}
-					component='form'
-					elevation={4}
-					sx={modalStyle}
-				>
-					<CardHeader title='Add a Note' />
+				<Card onSubmit={handleSubmit} component='form' elevation={4} sx={modalStyle}>
+					<CardHeader title='Take a note' />
 					<CardContent>
-						<FormInputs
-							handleValueChange={handleValueChange}
-							noteData={noteData}
-						/>
+						<FormInputs handleValueChange={handleValueChange} noteData={noteData} />
 					</CardContent>
 					<CardActions>
 						<Button
@@ -97,11 +89,7 @@ const AddNoteForm = ({ isOpen, closeForm }) => {
 					</CardActions>
 				</Card>
 			</Collapse>
-			<Notification
-				isOpen={isNotificationOpen}
-				handleClose={hideNotification}
-				alertType='success'
-			>
+			<Notification isOpen={isNotificationOpen} handleClose={hideNotification} alertType='success'>
 				Note added
 			</Notification>
 		</>

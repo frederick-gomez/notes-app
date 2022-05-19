@@ -31,8 +31,6 @@ const useFetchNotes = (param1, param2) => {
 
 	useEffect(() => {
 		fetchNotes();
-		console.log(notesList);
-		return () => {};
 	}, [fetchNotes]);
 
 	return notesList;

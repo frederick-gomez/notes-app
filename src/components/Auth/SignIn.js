@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { auth, signInWithGoogle } from '../../firebase';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -31,7 +32,7 @@ const validationSchema = Yup.object().shape({
 		.max(20, 'Password must not exceed 20 characters'),
 });
 
-const SignIn = ({ switchForm }) => {
+const SignIn = () => {
 	const {
 		register,
 		handleSubmit,
@@ -47,9 +48,9 @@ const SignIn = ({ switchForm }) => {
 	const closeModal = () => setIsResetModal(false);
 
 	const navigate = useNavigate();
+	const [user] = useAuthState(auth);
 
-	const [signInWithEmailAndPassword, user, loading, error] =
-		useSignInWithEmailAndPassword(auth);
+	const [signInWithEmailAndPassword, UNUSED, loading, error] = useSignInWithEmailAndPassword(auth);
 
 	const submitSignInForm = (data) => {
 		try {
@@ -80,11 +81,7 @@ const SignIn = ({ switchForm }) => {
 
 	return (
 		<>
-			<Card
-				sx={modalStyle}
-				component='form'
-				onSubmit={handleSubmit(submitSignInForm)}
-			>
+			<Card sx={modalStyle} component='form' onSubmit={handleSubmit(submitSignInForm)}>
 				<CardHeader
 					title='Welcome back!'
 					titleTypographyProps={{
@@ -143,7 +140,9 @@ const SignIn = ({ switchForm }) => {
 						</Button>
 						<Typography>
 							Don't have an account?
-							<Button onClick={switchForm}>Register now</Button>
+							<Button component={Link} to='/register'>
+								Register now
+							</Button>
 						</Typography>
 					</Stack>
 				</CardActions>

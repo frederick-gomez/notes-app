@@ -5,6 +5,7 @@ import db, { auth, signInWithGoogle } from '../../firebase';
 import { useNavigate } from 'react-router-dom';
 import useCheckErrors from '../../hooks/useCheckErrors';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { Link } from 'react-router-dom';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -33,7 +34,7 @@ const validationSchema = Yup.object().shape({
 		.max(20, 'Password must not exceed 20 characters'),
 });
 
-const Register = ({ switchForm }) => {
+const Register = () => {
 	const {
 		register,
 		handleSubmit,
@@ -66,6 +67,8 @@ const Register = ({ switchForm }) => {
 			setError(err);
 		}
 	};
+
+	console.log(user);
 
 	//Redirect if succesful
 	useEffect(() => {
@@ -157,7 +160,9 @@ const Register = ({ switchForm }) => {
 					</Button>
 					<Typography>
 						Already have an account?
-						<Button onClick={switchForm}>Sign in</Button>
+						<Button component={Link} to='/login'>
+							Sign in
+						</Button>
 					</Typography>
 				</Stack>
 			</CardActions>

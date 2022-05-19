@@ -1,9 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-	NoteViewContext,
-	NoteViewDispatchContext,
-} from '../Context/NoteViewContext';
-import SearchBar from './SearchBar';
+import { NoteViewContext, NoteViewDispatchContext } from '../Context/NoteViewContext';
 import UserModal from '../Auth/UserModal';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
@@ -34,7 +30,6 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 	return (
 		<>
 			<Stack direction='row'>
-				<SearchBar />
 				{!tabletSize && (
 					<Tooltip title={isListView ? 'Grid view' : 'List view'}>
 						<IconButton onClick={() => setIsListView(!isListView)}>

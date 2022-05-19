@@ -7,23 +7,35 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const Home = () => {
+	const paperStyle = {
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		transform: 'translate(-50%, -50%)',
+		padding: 3,
+	};
+
+	const stackStyle = {
+		minWidth: 250,
+	};
+
 	return (
-		<Paper
-			sx={{
-				padding: 2,
-				maxWidth: 500,
-				marginLeft: 'auto',
-				marginRight: 'auto',
-			}}
-		>
-			<Stack spacing={1}>
-				<Typography align='center' variant='h2'>
-					Welcome page
+		<Paper sx={paperStyle}>
+			<Stack spacing={1} sx={stackStyle}>
+				<Typography align='center' component='h1' variant='h5' sx={{ fontFamily: 'Open Sans' }}>
+					Welcome!
 				</Typography>
-				<Typography align='center'>First log in to create and read your notes</Typography>
-				<Button component={Link} to='/auth'>
-					Log In
-				</Button>
+				<Typography align='center' variant='body1'>
+					Log in or create your account to create and read your notes
+				</Typography>
+				<Stack spacing={1} direction='row' justifyContent='center'>
+					<Button component={Link} to='/login'>
+						Log In
+					</Button>
+					<Button component={Link} to='/register'>
+						Register
+					</Button>
+				</Stack>
 			</Stack>
 		</Paper>
 	);

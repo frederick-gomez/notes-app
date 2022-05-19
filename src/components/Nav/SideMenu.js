@@ -11,6 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ArchiveIcon from '@mui/icons-material/Archive';
+import Divider from '@mui/material/Divider';
 
 const SideMenu = ({ isOpen, toggleDrawer }) => {
 	return (
@@ -19,23 +20,29 @@ const SideMenu = ({ isOpen, toggleDrawer }) => {
 			variant='temporary'
 			anchor='left'
 			onClose={toggleDrawer}
-			sx={{
-				alignContent: 'flex-end',
-			}}
+			PaperProps={{ sx: { minWidth: '250px' } }}
 		>
 			<List disablePadding>
-				<ListItem disableGutters>
-					<ListItemButton divider onClick={toggleDrawer}>
+				<ListItem
+					disableGutters
+					sx={{
+						justifyContent: 'flex-end',
+						paddingRight: '1rem',
+					}}
+				>
+					<ListItemButton
+						onClick={toggleDrawer}
+						sx={{
+							maxWidth: '33%',
+							justifyContent: 'center',
+						}}
+					>
 						<ChevronLeftIcon fontSize='large' />
 					</ListItemButton>
 				</ListItem>
-
+				<Divider component='li' />
 				<ListItem>
-					<ListItemButton
-						component={NavLink}
-						to='/notes'
-						onClick={toggleDrawer}
-					>
+					<ListItemButton component={NavLink} to='/notes' onClick={toggleDrawer}>
 						<ListItemIcon>
 							<TextSnippetIcon />
 						</ListItemIcon>
@@ -44,15 +51,11 @@ const SideMenu = ({ isOpen, toggleDrawer }) => {
 				</ListItem>
 
 				<ListItem>
-					<ListItemButton
-						component={NavLink}
-						to='/filednotes'
-						onClick={toggleDrawer}
-					>
+					<ListItemButton component={NavLink} to='/archive' onClick={toggleDrawer}>
 						<ListItemIcon>
 							<ArchiveIcon />
 						</ListItemIcon>
-						<ListItemText primary='Filed Notes' />
+						<ListItemText primary='Archive' />
 					</ListItemButton>
 				</ListItem>
 			</List>

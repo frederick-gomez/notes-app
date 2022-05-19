@@ -3,16 +3,16 @@ import NoteCard from '../Notes/NoteCard';
 import NotesContainer from '../UI/NotesContainer';
 import useFetchNotes from '../../hooks/useFetchNotes';
 
-const FiledNotesList = () => {
-	const filedNotesList = useFetchNotes('isFiled', true);
+const ArchiveNotesList = () => {
+	const archivedNotesList = useFetchNotes('isFiled', true);
 
 	return (
 		<NotesContainer>
-			{filedNotesList.map((note) => (
+			{archivedNotesList.map((note) => (
 				<NoteCard key={note.id} noteData={note} />
 			))}
 		</NotesContainer>
 	);
 };
 
-export default FiledNotesList;
+export default ArchiveNotesList;

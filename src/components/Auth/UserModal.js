@@ -41,9 +41,9 @@ const UserModal = ({ anchorEl, closeModal }) => {
 	}, [fetchUserInfo]);
 
 	const signOut = () => {
-		navigate('/auth', { replace: true });
-		closeModal();
 		logout();
+		navigate('/login', { replace: true });
+		closeModal();
 	};
 
 	const modalStyle = {
@@ -70,17 +70,9 @@ const UserModal = ({ anchorEl, closeModal }) => {
 			<Card sx={modalStyle}>
 				<CardContent>
 					<Stack spacing={1} alignItems='center'>
-						<Avatar
-							sx={{ width: 56, height: 56 }}
-							alt={userInfo?.name}
-							src={user?.photoURL}
-						/>
+						<Avatar sx={{ width: 56, height: 56 }} alt={userInfo?.name} src={user?.photoURL} />
 						<Stack>
-							<Typography
-								align='center'
-								variant='h6'
-								sx={{ fontFamily: 'Open Sans' }}
-							>
+							<Typography align='center' variant='h6' sx={{ fontFamily: 'Open Sans' }}>
 								{user?.displayName ? user?.displayName : userInfo?.name}
 							</Typography>
 							<Typography align='center' variant='body2'>
