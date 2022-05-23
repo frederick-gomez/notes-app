@@ -24,7 +24,8 @@ const NavMenu = ({ toggleDrawer, user }) => {
 						src={Logo}
 						alt='Logo'
 						sx={{
-							width: '50px',
+							width: '48px',
+							height: '48px',
 						}}
 					/>
 				</Link>

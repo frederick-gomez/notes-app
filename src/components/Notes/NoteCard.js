@@ -10,12 +10,9 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
-
-//Icons
 import ClearIcon from '@mui/icons-material/Clear';
 
 const NoteCard = ({ noteData }) => {
-	const [currentColor, setCurrentColor] = useState(null);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -33,7 +30,6 @@ const NoteCard = ({ noteData }) => {
 				elevation={3}
 				sx={{
 					maxWidth: 600,
-					backgroundColor: `${currentColor}`,
 				}}
 			>
 				<CardHeader
@@ -63,26 +59,13 @@ const NoteCard = ({ noteData }) => {
 						paddingTop: '0',
 					}}
 				>
-					<NoteActions
-						openEdit={openEdit}
-						setCurrentColor={setCurrentColor}
-						noteId={noteData.id}
-						isFiled={noteData.isFiled}
-					/>
+					<NoteActions openEdit={openEdit} noteId={noteData.id} isFiled={noteData.isFiled} />
 				</CardActions>
 			</Card>
 
-			<EditNote
-				isOpen={isEditOpen}
-				handleClose={closeEdit}
-				noteData={noteData}
-			/>
+			<EditNote isOpen={isEditOpen} handleClose={closeEdit} noteData={noteData} />
 
-			<DeleteNote
-				isOpen={isDialogOpen}
-				handleClose={closeDeleteDialog}
-				noteId={noteData.id}
-			/>
+			<DeleteNote isOpen={isDialogOpen} handleClose={closeDeleteDialog} noteId={noteData.id} />
 		</>
 	);
 };

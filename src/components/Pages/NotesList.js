@@ -26,7 +26,6 @@ const NotesList = () => {
 				<AddNote />
 				<Stack spacing={1} alignItems='center' sx={boxStyle}>
 					<NoteAltIcon
-						// fontSize='large'
 						sx={{
 							color: 'rgba(154,160,166,0.5)',
 							height: '4em',
