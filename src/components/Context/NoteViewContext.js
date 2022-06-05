@@ -4,7 +4,6 @@ const NoteViewContext = createContext({
 	isListView: false,
 	toggleView: () => {},
 });
-// const NoteViewDispatchContext = createContext();
 
 const NoteViewProvider = ({ children }) => {
 	const [isListView, setIsListView] = useState(false);
@@ -16,13 +15,7 @@ const NoteViewProvider = ({ children }) => {
 		toggleView: toggleViewHandler,
 	};
 
-	return (
-		<NoteViewContext.Provider value={viewContext}>
-			{/* <NoteViewDispatchContext.Provider value={setIsListView}> */}
-			{children}
-			{/* </NoteViewDispatchContext.Provider> */}
-		</NoteViewContext.Provider>
-	);
+	return <NoteViewContext.Provider value={viewContext}>{children}</NoteViewContext.Provider>;
 };
 
 export { NoteViewProvider };

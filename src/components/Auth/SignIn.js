@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { auth, signInWithGoogle } from '../../firebase';
-import { useSignInWithEmailAndPassword, useAuthState } from 'react-firebase-hooks/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import AuthContext from '../Context/AuthContext';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -47,25 +48,37 @@ const SignIn = () => {
 	const openModal = () => setIsResetModal(true);
 	const closeModal = () => setIsResetModal(false);
 
+	const authCtx = useContext(AuthContext);
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
+
 	const navigate = useNavigate();
-	const [user] = useAuthState(auth);
 
-	const [signInWithEmailAndPassword, UNUSED, loading, error] = useSignInWithEmailAndPassword(auth);
-
-	const submitSignInForm = (data) => {
+	const submitSignInForm = async (data) => {
+		setLoading(true);
 		try {
-			signInWithEmailAndPassword(data.email, data.password);
+			const response = await signInWithEmailAndPassword(auth, data.email, data.password);
+			const user = response.user;
+			const token = await user.getIdToken();
+			authCtx.login(token);
 		} catch (error) {
-			console.log(error);
+			setLoading(false);
+			setError(error);
 		}
 	};
 
-	//Redirect if succesful
+	const signInWithGoogleHandler = async () => {
+		const token = await signInWithGoogle();
+		authCtx.login(token);
+	};
+
+	//Redirect if successful
+	const isLoggedIn = authCtx.isLoggedIn;
 	useEffect(() => {
-		if (user) {
+		if (isLoggedIn) {
 			navigate('/notes', { replace: true });
 		}
-	}, [user, navigate]);
+	}, [isLoggedIn, navigate]);
 
 	let errorMessage = useCheckErrors(error);
 
@@ -134,7 +147,7 @@ const SignIn = () => {
 							variant='contained'
 							color='error'
 							startIcon={<GoogleIcon />}
-							onClick={signInWithGoogle}
+							onClick={signInWithGoogleHandler}
 						>
 							Sign in with Google
 						</Button>

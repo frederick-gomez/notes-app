@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import './App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import AuthContext from './components/Context/AuthContext';
 
 //Components
 import Layout from './components/Pages/Layout';
@@ -9,7 +10,6 @@ import ArchiveNotes from './components/Pages/ArchiveNotes';
 import Home from './components/Pages/Home';
 import SignIn from './components/Auth/SignIn';
 import Register from './components/Auth/Register';
-import RequiredLogin from './components/Pages/RequiredLogin';
 
 //Material UI
 import Container from '@mui/material/Container';
@@ -19,17 +19,19 @@ import Container from '@mui/material/Container';
 // TODO: Unsuscribe all listeners in logout
 
 function App() {
+	const authCtx = useContext(AuthContext);
+	const isLoggedIn = authCtx.isLoggedIn;
+
 	return (
 		<Layout>
 			<Container maxWidth='xl' component='main'>
 				<Routes>
 					<Route path='/' element={<Home />} />
-					<Route path='/login' element={<SignIn />} />
-					<Route path='/register' element={<Register />} />
-					<Route element={<RequiredLogin />}>
-						<Route path='/notes' element={<NotesList />} />
-						<Route path='/archive' element={<ArchiveNotes />} />
-					</Route>
+					{!isLoggedIn && <Route path='/login' element={<SignIn />} />}
+					{!isLoggedIn && <Route path='/register' element={<Register />} />}
+					{isLoggedIn && <Route path='/notes' element={<NotesList />} />}
+					{isLoggedIn && <Route path='/archive' element={<ArchiveNotes />} />}
+					<Route path='*' element={<Navigate to='/' />} />
 				</Routes>
 			</Container>
 		</Layout>

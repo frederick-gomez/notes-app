@@ -1,19 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import {
-	getFirestore,
-	query,
-	getDocs,
-	doc,
-	collection,
-	where,
-	setDoc,
-} from 'firebase/firestore';
-import {
-	getAuth,
-	signInWithPopup,
-	GoogleAuthProvider,
-	signOut,
-} from 'firebase/auth';
+import { getFirestore, query, getDocs, doc, collection, where, setDoc } from 'firebase/firestore';
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyDApDegHxbZP4Hwf1fa3SJsPSnYwJvNvkk',
@@ -36,6 +23,7 @@ const signInWithGoogle = async () => {
 	try {
 		const response = await signInWithPopup(auth, googleProvider);
 		const user = response.user;
+		const token = await user.getIdToken();
 		const q = query(collection(db, 'users'), where('uid', '==', user.uid));
 		const querySnapshot = await getDocs(q);
 		if (querySnapshot.empty) {
@@ -46,6 +34,7 @@ const signInWithGoogle = async () => {
 				email: user.email,
 			});
 		}
+		return token;
 	} catch (error) {
 		console.log(error.message);
 	}

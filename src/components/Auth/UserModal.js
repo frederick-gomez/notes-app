@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import db, { logout, auth } from '../../firebase';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import db, { auth } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../Context/AuthContext';
 
 //Material UI
 import Popover from '@mui/material/Popover';
@@ -15,11 +16,12 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 
 const UserModal = ({ anchorEl, closeModal }) => {
+	const authCtx = useContext(AuthContext);
 	const [userInfo, setUserInfo] = useState('');
 	const [user] = useAuthState(auth);
 	const navigate = useNavigate();
 
-	const isOpen = Boolean(anchorEl);
+	const isOpen = !!anchorEl;
 
 	const fetchUserInfo = useCallback(async () => {
 		if (user) {
@@ -41,8 +43,8 @@ const UserModal = ({ anchorEl, closeModal }) => {
 	}, [fetchUserInfo]);
 
 	const signOut = () => {
-		logout();
 		navigate('/login', { replace: true });
+		authCtx.logout();
 		closeModal();
 	};
 

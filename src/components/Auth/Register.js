@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import db, { auth, signInWithGoogle } from '../../firebase';
-import { useNavigate } from 'react-router-dom';
 import useCheckErrors from '../../hooks/useCheckErrors';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import AuthContext from '../Context/AuthContext';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -43,10 +43,8 @@ const Register = () => {
 		resolver: yupResolver(validationSchema),
 		shouldUnregister: true,
 	});
-
+	const authCtx = useContext(AuthContext);
 	const navigate = useNavigate();
-
-	const [user] = useAuthState(auth);
 
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -56,6 +54,8 @@ const Register = () => {
 		try {
 			const response = await createUserWithEmailAndPassword(auth, data.email, data.password);
 			const user = response.user;
+			const token = await user.getIdToken();
+			authCtx.login(token);
 			await setDoc(doc(db, 'users', user.uid), {
 				uid: user.uid,
 				name: data.name,
@@ -68,12 +68,18 @@ const Register = () => {
 		}
 	};
 
-	//Redirect if succesful
+	const signInWithGoogleHandler = async () => {
+		const token = await signInWithGoogle();
+		authCtx.login(token);
+	};
+
+	//Redirect if successful
+	const isLoggedIn = authCtx.isLoggedIn;
 	useEffect(() => {
-		if (user) {
+		if (isLoggedIn) {
 			navigate('/notes', { replace: true });
 		}
-	}, [user, navigate]);
+	}, [isLoggedIn, navigate]);
 
 	let errorMessage = useCheckErrors(error);
 
@@ -152,7 +158,7 @@ const Register = () => {
 						variant='contained'
 						color='error'
 						startIcon={<GoogleIcon />}
-						onClick={signInWithGoogle}
+						onClick={signInWithGoogleHandler}
 					>
 						Register with Google
 					</Button>
