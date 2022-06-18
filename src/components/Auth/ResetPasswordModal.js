@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { auth } from '../../firebase';
-import { useSendPasswordResetEmail } from 'react-firebase-hooks/auth';
+import useCheckErrors from '../../hooks/useCheckErrors';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import Notification from '../UI/Notification';
 
 //Form validation
 import { useForm } from 'react-hook-form';
@@ -31,53 +33,71 @@ const ResetPasswordModal = ({ isOpen, handleClose }) => {
 		shouldUnregister: true,
 	});
 
-	const [sendPasswordResetEmail, sending, resetError] =
-		useSendPasswordResetEmail(auth);
+	const [openNotification, setOpenNotification] = useState(false);
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
 
-	const passwordResetHandler = (data) => {
-		sendPasswordResetEmail(data.email);
-		if (resetError) {
-			console.log(resetError);
-		}
+	const closeNotification = () => setOpenNotification(false);
+
+	const closeModalHandler = () => {
+		setError('');
 		handleClose();
 	};
 
+	const passwordResetHandler = async (data) => {
+		setLoading(true);
+		try {
+			await sendPasswordResetEmail(auth, data.email);
+			handleClose();
+			setOpenNotification(true);
+			setLoading(false);
+		} catch (err) {
+			setLoading(false);
+			setError(err);
+		}
+	};
+
+	let errorMessage = useCheckErrors(error);
+
 	return (
-		<Dialog open={isOpen} onClose={handleClose}>
-			<DialogTitle>Reset your password</DialogTitle>
-
-			<DialogContent>
-				<Typography>
-					Enter your email below and we'll send you a link to reset your
-					password.
-				</Typography>
-				<TextField
-					margin='dense'
-					id='email'
-					name='email'
-					label='Email'
-					fullWidth
-					{...register('email')}
-					error={errors.email ? true : false}
-					helperText={errors.email?.message}
-				/>
-			</DialogContent>
-
-			<DialogActions>
-				<Button color='error' variant='outlined' onClick={handleClose}>
-					Cancel
-				</Button>
-				<LoadingButton
-					type='submit'
-					variant='contained'
-					color='primary'
-					loading={sending}
-					onClick={handleSubmit(passwordResetHandler)}
-				>
-					Send Link
-				</LoadingButton>
-			</DialogActions>
-		</Dialog>
+		<>
+			<Dialog open={isOpen} onClose={closeModalHandler} PaperProps={{ style: { padding: 16 } }}>
+				<DialogTitle>Reset your password</DialogTitle>
+				<DialogContent>
+					<Typography>
+						Enter your email below and we'll send you a link to reset your password.
+					</Typography>
+					<TextField
+						margin='dense'
+						id='email'
+						name='email'
+						label='Email'
+						fullWidth
+						{...register('email')}
+						error={errors.email ? true : false}
+						helperText={errors.email?.message}
+					/>
+					{errorMessage}
+				</DialogContent>
+				<DialogActions>
+					<Button color='error' variant='outlined' onClick={closeModalHandler}>
+						Cancel
+					</Button>
+					<LoadingButton
+						type='submit'
+						variant='contained'
+						color='primary'
+						loading={loading}
+						onClick={handleSubmit(passwordResetHandler)}
+					>
+						Send Link
+					</LoadingButton>
+				</DialogActions>
+			</Dialog>
+			<Notification isOpen={openNotification} handleClose={closeNotification} alertType='info'>
+				Reset email send. Check your inbox.
+			</Notification>
+		</>
 	);
 };
 

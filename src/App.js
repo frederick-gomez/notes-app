@@ -1,7 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './App.css';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import AuthContext from './components/Context/AuthContext';
+import { AnimatePresence } from 'framer-motion';
 
 //Components
 import Layout from './components/Pages/Layout';
@@ -14,25 +15,28 @@ import Register from './components/Auth/Register';
 //Material UI
 import Container from '@mui/material/Container';
 
-// TODO: style reset password modal
 // TODO: Implement tags feature
 // TODO: Unsuscribe all listeners in logout
+// TODO: Update Home Page
 
 function App() {
 	const authCtx = useContext(AuthContext);
 	const isLoggedIn = authCtx.isLoggedIn;
+	const location = useLocation();
 
 	return (
 		<Layout>
-			<Container maxWidth='xl' component='main'>
-				<Routes>
-					<Route path='/' element={<Home />} />
-					{!isLoggedIn && <Route path='/login' element={<SignIn />} />}
-					{!isLoggedIn && <Route path='/register' element={<Register />} />}
-					{isLoggedIn && <Route path='/notes' element={<NotesList />} />}
-					{isLoggedIn && <Route path='/archive' element={<ArchiveNotes />} />}
-					<Route path='*' element={<Navigate to='/' />} />
-				</Routes>
+			<Container maxWidth='xl' component='main' sx={{ marginBottom: 2 }}>
+				<AnimatePresence exitBeforeEnter>
+					<Routes key={location.pathname} location={location}>
+						<Route path='/' element={<Home />} />
+						{!isLoggedIn && <Route path='/login' element={<SignIn />} />}
+						{!isLoggedIn && <Route path='/register' element={<Register />} />}
+						{isLoggedIn && <Route path='/notes' element={<NotesList />} />}
+						{isLoggedIn && <Route path='/archive' element={<ArchiveNotes />} />}
+						<Route path='*' element={<Navigate to='/' />} />
+					</Routes>
+				</AnimatePresence>
 			</Container>
 		</Layout>
 	);

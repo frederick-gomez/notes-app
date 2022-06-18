@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import EditNote from './EditNote';
 import NoteActions from './NoteActions';
 import DeleteNote from './DeleteNote';
+import { motion } from 'framer-motion';
 
 //Material UI
 import Typography from '@mui/material/Typography';
@@ -31,6 +32,12 @@ const NoteCard = ({ noteData }) => {
 				sx={{
 					maxWidth: 600,
 				}}
+				component={motion.div}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				whileTap={{ scale: 0.98, transition: { duration: 0.2 } }}
+				transition={{ duration: 0.5 }}
 			>
 				<CardHeader
 					title={noteData.title}
@@ -45,7 +52,6 @@ const NoteCard = ({ noteData }) => {
 						</IconButton>
 					}
 				/>
-
 				<CardContent
 					sx={{
 						paddingTop: 0,
@@ -53,7 +59,6 @@ const NoteCard = ({ noteData }) => {
 				>
 					<Typography variant='body2'>{noteData.body}</Typography>
 				</CardContent>
-
 				<CardActions
 					sx={{
 						paddingTop: '0',

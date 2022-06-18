@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import AuthContext from '../Context/AuthContext';
+import Transition from '../UI/Transition';
 
 //Form Validation
 import { useForm } from 'react-hook-form';
@@ -83,17 +84,15 @@ const SignIn = () => {
 	let errorMessage = useCheckErrors(error);
 
 	const modalStyle = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+		marginLeft: 'auto',
+		marginRight: 'auto',
 		minWidth: 300,
 		maxWidth: 500,
 		padding: 2,
 	};
 
 	return (
-		<>
+		<Transition>
 			<Card sx={modalStyle} component='form' onSubmit={handleSubmit(submitSignInForm)}>
 				<CardHeader
 					title='Welcome back!'
@@ -161,7 +160,7 @@ const SignIn = () => {
 				</CardActions>
 			</Card>
 			<ResetPasswordModal isOpen={isResetModal} handleClose={closeModal} />
-		</>
+		</Transition>
 	);
 };
 

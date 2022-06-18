@@ -3,6 +3,7 @@ import NoteCard from '../Notes/NoteCard';
 import NotesContainer from '../UI/NotesContainer';
 import AddNote from '../Notes/AddNote/AddNote';
 import useFetchNotes from '../../hooks/useFetchNotes';
+import Transition from '../UI/Transition';
 
 //Material UI
 import Typography from '@mui/material/Typography';
@@ -13,17 +14,15 @@ const NotesList = () => {
 	const notesList = useFetchNotes('isFiled', false);
 
 	const boxStyle = {
-		position: 'absolute',
-		top: '50%',
-		left: '50%',
-		transform: 'translate(-50%, -50%)',
+		marginTop: 5,
 		zIndex: '-1000',
 	};
 
 	if (notesList.length === 0) {
 		return (
-			<>
+			<Transition>
 				<AddNote />
+				<br />
 				<Stack spacing={1} alignItems='center' sx={boxStyle}>
 					<NoteAltIcon
 						sx={{
@@ -40,24 +39,25 @@ const NotesList = () => {
 							fontFamily: 'Open Sans',
 							fontStyle: 'italic',
 							color: 'rgba(154,160,166,0.5)',
+							userSelect: 'none',
 						}}
 					>
 						Notes you add appear here
 					</Typography>
 				</Stack>
-			</>
+			</Transition>
 		);
 	}
 
 	return (
-		<>
+		<Transition>
 			<AddNote />
 			<NotesContainer>
 				{notesList.map((note) => (
 					<NoteCard key={note.id} noteData={note} />
 				))}
 			</NotesContainer>
-		</>
+		</Transition>
 	);
 };
 

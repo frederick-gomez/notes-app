@@ -30,12 +30,15 @@ const useCheckErrors = (error) => {
 			</Box>
 		);
 	}
+	if (error?.message.includes('auth/invalid-email')) {
+		return <Box sx={errorStyle}>Please enter a valid email</Box>;
+	}
 	if (error?.message.includes('email-already-in-use')) {
 		return <Box sx={errorStyle}>Email already in use</Box>;
 	}
 	if (error) {
 		console.log(error);
-		return <Box sx={errorStyle}>Something went wrong</Box>;
+		return <Box sx={errorStyle}>Something went wrong!</Box>;
 	} else {
 		return null;
 	}

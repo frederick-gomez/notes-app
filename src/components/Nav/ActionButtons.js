@@ -29,7 +29,7 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 	return (
 		<>
 			<Stack direction='row'>
-				{!tabletSize && (
+				{!tabletSize && user && (
 					<Tooltip title={isListView ? 'Grid view' : 'List view'}>
 						<IconButton onClick={toggleView}>
 							{isListView ? (

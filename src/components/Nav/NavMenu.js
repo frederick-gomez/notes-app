@@ -11,30 +11,28 @@ import Box from '@mui/material/Box';
 
 const NavMenu = ({ toggleDrawer, user }) => {
 	return (
-		<>
-			<Stack direction='row' spacing={1} alignItems='center'>
-				{user && (
-					<IconButton aria-label='menu' onClick={toggleDrawer}>
-						<MenuIcon />
-					</IconButton>
-				)}
-				<Link to='/'>
-					<Box
-						component='img'
-						src={Logo}
-						alt='Logo'
-						sx={{
-							width: '48px',
-							height: '48px',
-						}}
-					/>
-				</Link>
+		<Stack direction='row' spacing={1} alignItems='center'>
+			{user && (
+				<IconButton aria-label='menu' onClick={toggleDrawer}>
+					<MenuIcon />
+				</IconButton>
+			)}
+			<Link to='/'>
+				<Box
+					component='img'
+					src={Logo}
+					alt='Logo'
+					sx={{
+						width: '48px',
+						height: '48px',
+					}}
+				/>
+			</Link>
 
-				<Typography variant='h6' component='h1' noWrap>
-					Notes
-				</Typography>
-			</Stack>
-		</>
+			<Typography variant='h6' component='h1' noWrap>
+				Notes
+			</Typography>
+		</Stack>
 	);
 };
 

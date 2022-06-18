@@ -56,6 +56,7 @@ const Layout = ({ children }) => {
 				<ThemeProviderCtx value={isDarkMode}>
 					<NoteViewProvider>
 						<Nav darkModeHandler={darkModeHandler} isDarkMode={isDarkMode} />
+						<br />
 						{children}
 					</NoteViewProvider>
 				</ThemeProviderCtx>

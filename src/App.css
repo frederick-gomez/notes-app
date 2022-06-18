@@ -2,3 +2,10 @@
 	max-width: 90%;
 	margin: auto;
 }
+::selection {
+	background-color: #ffc107c7;
+}
+
+body {
+	overflow-x: hidden;
+}
