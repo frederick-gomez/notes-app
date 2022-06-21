@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 
 //Material UI
 import Paper from '@mui/material/Paper';
@@ -7,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 
-const WelcomeCard = ({ style }) => {
+const WelcomeCard = ({ style, dismissHandler }) => {
 	const [isClicked, setIsClicked] = useState(false);
 	const [openSlide, setOpenSlide] = useState(false);
 
@@ -19,10 +20,20 @@ const WelcomeCard = ({ style }) => {
 	const buttonHandler = () => {
 		setOpenSlide(true);
 		localStorage.setItem('initial', 'false');
+		dismissHandler();
 	};
 	return (
 		<>
-			<Paper sx={style} ref={containerRef}>
+			<Paper
+				sx={style}
+				ref={containerRef}
+				component={motion.div}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				transition={{ duration: 0.5 }}
+				layout
+			>
 				<Stack spacing={1}>
 					<Typography align='center' component='h1' variant='h5' sx={{ fontFamily: 'Open Sans' }}>
 						Well...
@@ -39,6 +50,7 @@ const WelcomeCard = ({ style }) => {
 							onMouseOver={enterHandler}
 							onMouseOut={exitHandler}
 							onFocus={enterHandler}
+							onBlur={exitHandler}
 							variant='contained'
 							color={isClicked ? 'success' : 'error'}
 						>

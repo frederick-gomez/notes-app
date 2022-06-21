@@ -4,6 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import Transition from '../UI/Transition';
 import NavigationCard from '../NavigationCard';
+import { AnimatePresence } from 'framer-motion';
 
 //Material UI
 import Paper from '@mui/material/Paper';
@@ -32,11 +33,21 @@ const Home = () => {
 		}
 	}, []);
 
+	const dismissHandler = () => {
+		setTimeout(() => {
+			setInitial(false);
+		}, 5000);
+	};
+
 	if (user) {
 		return (
 			<Transition>
-				{initial && <WelcomeCard style={paperStyle} />}
-				{!initial && <NavigationCard style={paperStyle} />}
+				<Stack spacing={5} alignItems='center'>
+					<AnimatePresence>
+						<NavigationCard key='1' style={paperStyle} />
+						{initial && <WelcomeCard key='2' style={paperStyle} dismissHandler={dismissHandler} />}
+					</AnimatePresence>
+				</Stack>
 			</Transition>
 		);
 	}
