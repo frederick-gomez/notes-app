@@ -19,7 +19,7 @@ const Nav = ({ darkModeHandler, isDarkMode }) => {
 	const navPadding = smallMobileSize ? 0 : null;
 
 	return (
-		<Box component='nav' mb={11} sx={{ flexGrow: 1 }}>
+		<Box component='nav' mb={11}>
 			<AppBar position='fixed' color='inherit'>
 				<Toolbar
 					sx={{

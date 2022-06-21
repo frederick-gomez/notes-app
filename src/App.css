@@ -6,6 +6,18 @@
 	background-color: #ffc107c7;
 }
 
+html,
 body {
+	height: 100%;
 	overflow-x: hidden;
+}
+
+#root {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex: 1 0 auto;
 }
