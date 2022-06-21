@@ -42,7 +42,7 @@ const Home = () => {
 	if (user) {
 		return (
 			<Transition>
-				<Stack spacing={5} alignItems='center'>
+				<Stack spacing={2} alignItems='center'>
 					<AnimatePresence>
 						<NavigationCard key='1' style={paperStyle} />
 						{initial && <WelcomeCard key='2' style={paperStyle} dismissHandler={dismissHandler} />}

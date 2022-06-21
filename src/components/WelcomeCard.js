@@ -7,6 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
+import Alert from '@mui/material/Alert';
 
 const WelcomeCard = ({ style, dismissHandler }) => {
 	const [isClicked, setIsClicked] = useState(false);
@@ -69,18 +70,20 @@ const WelcomeCard = ({ style, dismissHandler }) => {
 				mountOnEnter
 				unmountOnExit
 			>
-				<Paper
-					sx={{
-						...style,
-						marginTop: 2,
-						maxWidth: 400,
-						backgroundColor: 'info',
-					}}
+				<Alert
+					sx={style}
+					severity='success'
+					variant='outlined'
+					component={motion.div}
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					transition={{ duration: 0.5 }}
 				>
 					<Stack>
 						<Typography>Thank's for your honest opinion &#128513;</Typography>
 					</Stack>
-				</Paper>
+				</Alert>
 			</Slide>
 		</>
 	);
