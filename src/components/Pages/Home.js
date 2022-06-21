@@ -1,49 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import Transition from '../UI/Transition';
+import NavigationCard from '../NavigationCard';
 
 //Material UI
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import WelcomeCard from '../WelcomeCard';
 
 const paperStyle = {
 	marginLeft: 'auto',
 	marginRight: 'auto',
+	display: 'flex',
+	justifyContent: 'center',
 	maxWidth: 500,
-	minHeight: 400,
 	padding: 3,
 };
 
 const Home = () => {
 	const [user] = useAuthState(auth);
+	const [initial, setInitial] = useState(true);
+
+	useEffect(() => {
+		const firstRender = localStorage.getItem('initial');
+		if (firstRender === 'false') {
+			setInitial(false);
+		}
+	}, []);
 
 	if (user) {
 		return (
 			<Transition>
-				<Paper sx={paperStyle}>
-					<Stack
-						spacing={1}
-						sx={{
-							minWidth: 250,
-						}}
-					>
-						<Typography align='center' component='h1' variant='h5' sx={{ fontFamily: 'Open Sans' }}>
-							Welcome!
-						</Typography>
-						<Typography align='center' variant='body1'>
-							Already log in
-						</Typography>
-						<Stack spacing={1} direction='row' justifyContent='center'>
-							<Button component={Link} to='/notes'>
-								My Notes
-							</Button>
-						</Stack>
-					</Stack>
-				</Paper>
+				{initial && <WelcomeCard style={paperStyle} />}
+				{!initial && <NavigationCard style={paperStyle} />}
 			</Transition>
 		);
 	}
@@ -51,17 +44,12 @@ const Home = () => {
 	return (
 		<Transition>
 			<Paper sx={paperStyle}>
-				<Stack
-					spacing={1}
-					sx={{
-						minWidth: 250,
-					}}
-				>
+				<Stack spacing={1} justifyContent='center'>
 					<Typography align='center' component='h1' variant='h5' sx={{ fontFamily: 'Open Sans' }}>
 						Welcome!
 					</Typography>
 					<Typography align='center' variant='body1'>
-						Log in or create your account to create and read your notes
+						Ready to write your boring &#10024;grocery list&#10024;?
 					</Typography>
 					<Stack spacing={1} direction='row' justifyContent='center'>
 						<Button component={Link} to='/login'>

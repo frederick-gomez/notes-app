@@ -15,10 +15,6 @@ import Register from './components/Auth/Register';
 //Material UI
 import Container from '@mui/material/Container';
 
-// TODO: Implement tags feature
-// TODO: Unsuscribe all listeners in logout
-// TODO: Update Home Page
-
 function App() {
 	const authCtx = useContext(AuthContext);
 	const isLoggedIn = authCtx.isLoggedIn;

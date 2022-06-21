@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ThemeProviderCtx from '../Context/ThemeContext';
 import { NoteViewProvider } from '../Context/NoteViewContext';
 import Nav from '../Nav/Nav';
+import Footer from '../Footer';
 
 //Material UI
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
@@ -58,6 +59,7 @@ const Layout = ({ children }) => {
 						<Nav darkModeHandler={darkModeHandler} isDarkMode={isDarkMode} />
 						<br />
 						{children}
+						<Footer />
 					</NoteViewProvider>
 				</ThemeProviderCtx>
 			</CssBaseline>

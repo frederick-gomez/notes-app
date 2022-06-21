@@ -8,13 +8,20 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const NavMenu = ({ toggleDrawer, user }) => {
+	const mobileSize = useMediaQuery('(max-width:400px)');
+	const smallMobileSize = useMediaQuery('(max-width:320px)');
+	const logoSize = mobileSize ? '36px' : '48px';
+	const titleSize = mobileSize ? 'body1' : 'h6';
+	const iconSize = smallMobileSize ? 'medium' : 'large';
+
 	return (
 		<Stack direction='row' spacing={1} alignItems='center'>
 			{user && (
 				<IconButton aria-label='menu' onClick={toggleDrawer}>
-					<MenuIcon />
+					<MenuIcon fontSize={iconSize} />
 				</IconButton>
 			)}
 			<Link to='/'>
@@ -23,15 +30,22 @@ const NavMenu = ({ toggleDrawer, user }) => {
 					src={Logo}
 					alt='Logo'
 					sx={{
-						width: '48px',
-						height: '48px',
+						width: logoSize,
+						height: logoSize,
 					}}
 				/>
 			</Link>
 
-			<Typography variant='h6' component='h1' noWrap>
-				Notes
-			</Typography>
+			<Box>
+				<Typography
+					variant={titleSize}
+					component='h1'
+					sx={{ fontFamily: 'Merienda, cursive' }}
+					noWrap
+				>
+					Fantastic Pegasus
+				</Typography>
+			</Box>
 		</Stack>
 	);
 };

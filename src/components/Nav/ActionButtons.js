@@ -17,10 +17,12 @@ import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded';
 
 const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 	const tabletSize = useMediaQuery('(max-width:599px)');
+	const mobileSize = useMediaQuery('(max-width:320px)');
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [user] = useAuthState(auth);
-
 	const { isListView, toggleView } = useContext(NoteViewContext);
+
+	const iconSize = mobileSize ? 'medium' : 'large';
 
 	//Manage open/close modal
 	const selectAnchorEl = (event) => setAnchorEl(event.currentTarget);
@@ -33,9 +35,9 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 					<Tooltip title={isListView ? 'Grid view' : 'List view'}>
 						<IconButton onClick={toggleView}>
 							{isListView ? (
-								<GridViewRoundedIcon fontSize='large' />
+								<GridViewRoundedIcon fontSize={iconSize} />
 							) : (
-								<ViewListRoundedIcon fontSize='large' />
+								<ViewListRoundedIcon fontSize={iconSize} />
 							)}
 						</IconButton>
 					</Tooltip>
@@ -43,16 +45,16 @@ const ActionButtons = ({ darkModeHandler, isDarkMode }) => {
 				<Tooltip title={isDarkMode ? 'Enable light mode' : 'Enable dark mode'}>
 					<IconButton onClick={darkModeHandler}>
 						{isDarkMode ? (
-							<Brightness7Icon fontSize='large' />
+							<Brightness7Icon fontSize={iconSize} />
 						) : (
-							<Brightness4Icon fontSize='large' />
+							<Brightness4Icon fontSize={iconSize} />
 						)}
 					</IconButton>
 				</Tooltip>
 				{user && (
 					<Tooltip title='View account'>
 						<IconButton onClick={selectAnchorEl}>
-							<AccountCircleIcon fontSize='large' />
+							<AccountCircleIcon fontSize={iconSize} />
 						</IconButton>
 					</Tooltip>
 				)}
