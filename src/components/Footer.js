@@ -52,7 +52,7 @@ const Footer = () => {
 						</Stack>
 					</Link>
 					<Link
-						href='https://www.linkedin.com/in/federico-gomez-6b988b21a/'
+						href='https://www.linkedin.com/in/federico-gomez-dev/'
 						target='_blank'
 						rel='noopener noreferrer'
 						underline='none'
